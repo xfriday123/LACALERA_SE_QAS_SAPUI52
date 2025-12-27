@@ -1,0 +1,779 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	controllerName="nsnew.uisemnew.controller.Vista_Administrador" xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:layout="sap.ui.layout" xmlns:a="sap.f" xmlns:tab="sap.ui.table">
+	<App>
+		<pages>
+			<Page title=" Administración de datos" showNavButton="false">
+				<customHeader>
+					<Bar>
+						<contentLeft>
+							<Button icon="sap-icon://nav-back" press="f_press_volver" type="Transparent"/>
+						</contentLeft>
+						<contentMiddle>
+							<Title level="H3" text="Administración de datos"/>
+						</contentMiddle>
+					</Bar>
+				</customHeader>
+				<content>
+					<IconTabBar id="idTabBarFac" expanded="true" class="sapUiResponsiveContentPadding">
+						<items>
+							<IconTabFilter key="centro" text="Centro costos" count="{myParam>/listaObj_Co/length}" icon="sap-icon://lead">
+								<content> 
+									<tab:Table id="idTablaCentroCost"  sort="sortDeliveryDate" rows="{ path: 'myParam>/listaObj_Co'}" selectionMode="None" width="100%">
+										<tab:extension>
+                                        	<OverflowToolbar >
+												<core:Icon src="sap-icon://activity-items" alt="Cart" size="1.25rem"/>
+												<Title text="Tabla de centro de costos ({myParam>/listaObj_Co/length})"/>
+												<ToolbarSpacer/> 
+												<!--
+												<SearchField id="idFiltroBusq01" width="50%" placeholder="Filtrar centro de costo ..." liveChange="onSearchCentro"/>
+												-->
+												<Button text="Añadir centro de costos" type="Transparent" icon="sap-icon://sys-add" press="onPressCrearCentroCosto"/>
+												<Button text="Descargar excel" type="Transparent" icon="sap-icon://excel-attachment" press=".onPressExcelCentroCosto('/listaObj_Co','ReporteCentroCosto')"/>
+											</OverflowToolbar>
+                                    	</tab:extension>
+										<tab:noData>
+											<Link class="sapUiMediumMargin" text="No se hallaron los centros de costos."/>
+										</tab:noData>
+										<tab:columns>
+											<tab:Column width="40%" hAlign="Center">
+												<Text text="ID"/>
+												<tab:template>
+													<Label text="{myParam>OBJ_CO}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="40%" hAlign="Center">
+												<Text text="Descripción"/>
+												<tab:template>
+													<Label text="{myParam>DESC_OBJ_CO}"/>
+												</tab:template>
+											</tab:Column>
+											
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="Acción"/>
+												<tab:template>
+												<HBox>
+													<Button tooltip="Editar" text="Editar" icon="sap-icon://edit" type="Accept" press=".onPressEditarCentro"/>
+
+													<Button text="Eliminar" icon="sap-icon://delete" type="Reject" press=".pressEliminarCentro($event)"/> 
+												</HBox>
+												</tab:template>
+											</tab:Column> 
+										</tab:columns>
+									</tab:Table>
+								</content>
+							</IconTabFilter>  
+							<!--<IconTabFilter key="centro" text="T. Comprobante" count="{myParam>/listaObj_Co/length}" icon="sap-icon://lead">
+								<content>
+									<tab:Table id="idTablaTipoComprobante" selectionMode="None" sort="sortDeliveryDate" rows="{ path: 'myParam>/listaObj_Co'}" width="100%">
+										<tab:extension>
+                                        	<OverflowToolbar >
+												<core:Icon src="sap-icon://activity-items" alt="Cart" size="1.25rem"/>
+												<Title text="Tabla de tipo comprobante ({myParam>/listaObj_Co/length})"/>
+												<ToolbarSpacer/> 
+												<Button text="Añadir Tipo Comprobante" type="Transparent" icon="sap-icon://sys-add" press="onPressCrearTipoComprobante"/> 
+												<Button text="Descargar excel" type="Transparent" icon="sap-icon://excel-attachment" press=".onPressExcelTipoComprobante('/listaObj_Co','ReporteCentroCosto')"/>
+											</OverflowToolbar>
+                                    	</tab:extension>
+										<tab:noData>
+											<Link class="sapUiMediumMargin" text="No se hallaron los centros de costos."/>
+										</tab:noData>
+										<tab:columns>
+											<tab:Column width="40%" hAlign="Center">
+												<Text text="ID"/>
+												<tab:template>
+													<Label text="{myParam>OBJ_CO}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="40%" hAlign="Center">
+												<Text text="Descripción"/>
+												<tab:template>
+													<Label text="{myParam>DESC_OBJ_CO}"/>
+												</tab:template>
+											</tab:Column>
+											
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="Acción"/>
+												<tab:template>
+													<Button text="Eliminar" icon="sap-icon://delete" type="Reject" press=".pressEliminarCentroCosto($event)"/>
+												</tab:template>
+											</tab:Column>
+
+										</tab:columns>
+									</tab:Table>
+								</content>
+							</IconTabFilter>-->
+
+							<!--
+							<IconTabFilter key="centro" text="Con. Gasto" count="{myParam>/listaObj_Co/length}" icon="sap-icon://lead">
+								<content>
+									<tab:Table id="idTableConceptoGasto" sort="sortDeliveryDate" rows="{ path: 'myParam>/listaConceptosGasto'}" selectionMode="None" width="100%">
+										<tab:extension>
+                                        	<OverflowToolbar>
+												<core:Icon src="sap-icon://travel-expense-report" alt="Cart" size="1.25rem"/>
+												<Title text="Tabla de conceptos de Gasto ({myParam>/listaConceptosGasto/length})" />
+												<ToolbarSpacer/>
+												 <Button text="Añadir concepto de Gasto" type="Transparent" icon="sap-icon://sys-add" press="onPressCreaConceptoGasto"/>
+												 <Button text="Descargar excel" type="Transparent" icon="sap-icon://excel-attachment" press="onPressExcelConceptoGasto"/>
+											</OverflowToolbar>
+                                    	</tab:extension>
+										<tab:noData>
+											<Link class="sapUiMediumMargin" text="No se hallaron los conceptos de Gasto."/>
+										</tab:noData>
+										<tab:columns>
+											<tab:Column width="40%" hAlign="Center">
+												<Text text="ID"/>
+												<tab:template>
+													<Label text="{myParam>ID_CONCEPTO}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="60%" hAlign="Center">
+												<Text text="Descripción"/>
+												<tab:template>
+													<Label text="{myParam>DES_CONCEPTO}"/>
+												</tab:template>
+											</tab:Column>
+											 <tab:Column width="20%" hAlign="Center">
+												<Text text="Acción"/>
+												<tab:template>
+													<HBox>
+														<Button text="Editar" tooltip="Editar" icon="sap-icon://edit" type="Accept" press=".onPressEditarConceptoGasto($event)"/>
+
+														<Button text="Eliminar" icon="sap-icon://delete" type="Reject" press=".pressEliminarConceptoGasto($event)"/>
+													</HBox>
+												</tab:template>
+											</tab:Column> 
+										</tab:columns>
+									</tab:Table>
+								</content>
+							</IconTabFilter>
+							--> 
+							<IconTabFilter key="area" text="Área" count="{myParam>/listaAreas/length}" icon="sap-icon://citizen-connect">
+								<content>
+									<tab:Table id="idTableArea" selectionMode="None" sort="sortDeliveryDate" rows="{ path: 'myParam>/listaAreas'}"  width="100%">
+										<tab:extension>
+                                        	<OverflowToolbar >
+												<core:Icon src="sap-icon://citizen-connect" alt="Cart" size="1.25rem"/>
+												<Title text="Tabla de áreas ({myParam>/listaAreas/length})" />
+												<ToolbarSpacer/>
+											 	<Button text="Añadir area" type="Transparent" icon="sap-icon://sys-add" press="onPressCrearArea"/>
+												<Button text="Descargar excel" type="Transparent" icon="sap-icon://excel-attachment" press="onPressExcelArea"/>
+											</OverflowToolbar>
+                                   	 	</tab:extension>
+										<tab:noData>
+											<Link class="sapUiMediumMargin" text="No se hallaron las áreas."/>
+										</tab:noData>
+										<tab:columns>
+											<tab:Column width="40%" hAlign="Center">
+												<Text text="ID"/>
+												<tab:template>
+													<Label text="{myParam>AREA}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="40%" hAlign="Center">
+												<Text text="Descripción"/>
+												<tab:template>
+													<Label text="{myParam>DESC_AREA}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="Ceco"/>
+												<tab:template>
+													<Label text="{myParam>OBJ_CO}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="Acción"/>
+												<tab:template>
+													<HBox>
+														<Button text="Editar" tooltip="Editar" icon="sap-icon://edit" type="Accept" press=".onPressEditarArea($event)"/> 
+														<Button text="Eliminar" icon="sap-icon://delete" type="Reject" press=".pressEliminarArea($event)"/>
+													</HBox>
+												</tab:template>
+											</tab:Column> 
+										</tab:columns>
+									</tab:Table>
+								</content>
+							</IconTabFilter> 
+							<!-- <IconTabFilter key="cajaChica" text="Caja chica" count="{myParam>/cajaChica/length}" icon="sap-icon://sap-box">
+								<content>
+									<tab:Table id="idTableCaja" sort="sortDeliveryDate" rows="{ path: 'myParam>/cajaChica'}"   width="100%">
+										<tab:extension>
+                                        	<OverflowToolbar >
+												<core:Icon src="sap-icon://sap-box" alt="Cart" size="1.25rem"/>
+												<Title text="Tabla de cajas chicas ({myParam>/cajaChica/length})" />
+												<ToolbarSpacer/>
+												<Button text="Añadir caja chica" type="Transparent" icon="sap-icon://sys-add" press="onPressCrearCajaChica"/>
+												<Button text="Descargar excel" type="Transparent" icon="sap-icon://excel-attachment" press=".onPressExcelCentroCosto('/cajaChica','ReporteCajaChica')"/>
+											</OverflowToolbar>
+										</tab:extension>
+										<tab:noData>
+											<Link class="sapUiMediumMargin" text="No se hallaron las cajas chicas."/>
+										</tab:noData>
+										<tab:columns>
+											<tab:Column width="40%" hAlign="Center">
+												<Text text="ID"/>
+												<tab:template>
+													<Label text="{myParam>id}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="40%" hAlign="Center">
+												<Text text="Descripción"/>
+												<tab:template>
+													<Label text="{myParam>des}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="Acción"/>
+												<tab:template>
+													<Button text="Eliminar" icon="sap-icon://delete" type="Reject" press=".pressEliminarCaja($event)"/>
+												</tab:template>
+											</tab:Column>
+										</tab:columns>
+									</tab:Table>
+								</content>
+							</IconTabFilter> -->
+							<!-- 
+							<IconTabFilter key="comprobante" text="Comprobante" count="{myParam>/listaComprobantes/length}" icon="sap-icon://sales-order-item">
+								<content>
+									<tab:Table id="idTableComprobante" selectionMode="None" sort="sortDeliveryDate" rows="{ path: 'myParam>/listaComprobantes'}" width="100%">
+										<tab:extension>
+                                        	<OverflowToolbar >
+												<core:Icon src="sap-icon://sales-order-item" alt="Cart" size="1.25rem"/>
+												<Title text="Tabla de comprobantes ({myParam>/listaComprobantes/length})" />
+												<ToolbarSpacer/>
+												 <Button text="Añadir comprobante" type="Transparent" icon="sap-icon://sys-add" press="onPressCreaComprobante"/>
+												 <Button text="Descargar excel" type="Transparent" icon="sap-icon://excel-attachment" press="onPressExcelComprobante"/>
+											</OverflowToolbar>
+                                    	</tab:extension>
+										<tab:noData>
+											<Link class="sapUiMediumMargin" text="No se hallaron los comprobantes."/>
+										</tab:noData>
+										<tab:columns>
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="ID"/>
+												<tab:template>
+													<Label text="{myParam>TIP_COMP}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="60%" hAlign="Center">
+												<Text text="Descripción"/>
+												<tab:template>
+													<Label text="{myParam>DESC_COMP}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="País"/>
+												<tab:template>
+													<Label text="{myParam>PAIS}"/>
+												</tab:template>
+											</tab:Column>
+											 <tab:Column width="20%" hAlign="Center">
+												<Text text="Acción"/>
+												<tab:template>
+													<HBox> 
+														<Button text="Eliminar" icon="sap-icon://delete" type="Reject" press=".pressEliminarComprobante($event)"/>
+													</HBox>
+												</tab:template>
+											</tab:Column> 
+										</tab:columns>
+									</tab:Table>
+								</content>
+							</IconTabFilter>
+							-->
+							<IconTabFilter key="conceptoPago" text="Con. Pago" count="{myParam>/listaConceptosPago/length}" icon="sap-icon://travel-expense-report">
+								<content>
+									<tab:Table id="idTableConceptoPago" sort="sortDeliveryDate" rows="{ path: 'myParam>/listaConceptosPago'}" selectionMode="None" width="100%">
+										<tab:extension>
+                                        	<OverflowToolbar>
+												<core:Icon src="sap-icon://travel-expense-report" alt="Cart" size="1.25rem"/>
+												<Title text="Tabla de conceptos de pago ({myParam>/listaConceptosPago/length})" />
+												<ToolbarSpacer/>
+												 <Button text="Añadir concepto de pago" type="Transparent" icon="sap-icon://sys-add" press="onPressCreaConceptoPago"/>
+												 <Button text="Descargar excel" type="Transparent" icon="sap-icon://excel-attachment" press="onPressExcelConceptoPago"/>
+											</OverflowToolbar>
+                                    	</tab:extension>
+										<tab:noData>
+											<Link class="sapUiMediumMargin" text="No se hallaron los conceptos de pago."/>
+										</tab:noData>
+										<tab:columns>
+											<tab:Column width="40%" hAlign="Center">
+												<Text text="ID"/>
+												<tab:template>
+													<Label text="{myParam>ID_CONCEPTO}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="60%" hAlign="Center">
+												<Text text="Descripción"/>
+												<tab:template>
+													<Label text="{myParam>DES_CONCEPTO}"/>
+												</tab:template>
+											</tab:Column>
+											<!--<tab:Column width="40%" hAlign="Center">
+												<Text text="Alimento"/>
+												<tab:template>
+													<HBox>
+														 <CheckBox selected="{myParam>ALIMENTO}" editable="false"/>
+														<Button icon="sap-icon://accept" type="Accept" press="onOkAlimento" class="sapUiTinyMarginBeginEnd" />
+														<Button icon="sap-icon://decline" type="Reject" press="onXAlimento" class="sapUiTinyMarginBeginEnd" />
+													</HBox>
+													 <Label text="{myParam>alimento}"/> 
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="40%" hAlign="Center">
+												<Text text="Gasto Vehicular"/>
+												<tab:template>
+													<HBox>
+														<CheckBox selected="{path: 'myParam>GASTO_VEHIC', formatter: '.formatXtoBoolean'}"  editable="false"/>
+														<Button icon="sap-icon://accept" type="Accept" press="onOkGastoV" class="sapUiTinyMarginBeginEnd" />
+														<Button icon="sap-icon://decline" type="Reject" press="onXGastoV" class="sapUiTinyMarginBeginEnd" />
+													</HBox>
+													 <Label text="{myParam>alimento}"/> 
+												</tab:template>
+											</tab:Column>-->
+											<!--<tab:Column width="40%" hAlign="Center">
+												<Text text="Limite"/>
+												<tab:template>
+													<HBox>
+														<CheckBox selected="false" select="onOffInputLimite"/>
+														<Input id="inputLimite" value="{myParam>limite}" type="Number" placeholder="Insertar limite..." change="changeInputLimite" enabled="true" />
+													</HBox>
+													 <Label text="{myParam>limite}"/> 
+												</tab:template>
+											</tab:Column>-->
+											<!--<tab:Column width="40%" hAlign="Center">
+												<Text text="Gasto de flota"/>
+												<tab:template>
+													<HBox>
+														<CheckBox selected="{path: 'myParam>gastoFlota', formatter: '.formatXtoBoolean'}" editable="false"/>
+														<Button icon="sap-icon://accept" type="Accept" press="onOkGastoFlota" class="sapUiTinyMarginBeginEnd" />
+														<Button icon="sap-icon://decline" type="Reject" press="onXGastoFlota" class="sapUiTinyMarginBeginEnd" />
+													</HBox>
+												</tab:template>
+											</tab:Column>-->
+											 <tab:Column width="20%" hAlign="Center">
+												<Text text="Acción"/>
+												<tab:template>
+													<HBox>
+														<Button text="Editar" tooltip="Editar" icon="sap-icon://edit" type="Accept" press=".onPressEditarConceptoPago($event)"/>
+
+														<Button text="Eliminar" icon="sap-icon://delete" type="Reject" press=".pressEliminarConceptoPago($event)"/>
+													</HBox>
+												</tab:template>
+											</tab:Column> 
+										</tab:columns>
+									</tab:Table>
+								</content>
+							</IconTabFilter>
+							<IconTabFilter key="usuario" text="Usuario" count="{myParam>/usuariosADM/length}" icon="sap-icon://customer-and-supplier">
+								<content>
+									<tab:Table id="idTableUsuarios" sort="sortDeliveryDate" rows="{ path: 'myParam>/usuariosADM'}" width="100%">
+										<tab:extension>
+                                        	<OverflowToolbar >
+												<core:Icon src="sap-icon://customer-and-supplir" alt="Cart" size="1.25rem"/>
+												<Title text="Tabla usuarios ({myParam>/usuariosADM/length})" />
+												<ToolbarSpacer/>
+												<SearchField id="idFiltroBusq02" width="50%" placeholder="Filtrar usuario ..." liveChange="onSearchUsuario"/>
+												<Button text="Añadir usuario" type="Transparent" icon="sap-icon://sys-add" press="onPressCreaUsuario"/>
+												<Button text="Descargar excel" type="Transparent" icon="sap-icon://excel-attachment" press="onPressExcelUsuarios"/>
+											</OverflowToolbar>
+                                    	</tab:extension>
+										<tab:noData>
+											<Link class="sapUiMediumMargin" text="No se hallaron los usuarios."/>
+										</tab:noData>
+										<tab:columns>
+											
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="Usuario"/>
+												<tab:template>
+													<Label text="{myParam>ID_USR}" wrapping="true"/>
+												</tab:template>
+											</tab:Column>
+											
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="Nombre de usuario"/>
+												<tab:template>
+													<Label text="{path: 'myParam>USERNAME'}" wrapping="true"/>
+												</tab:template>
+											</tab:Column>
+											<!--<tab:Column width="15%" hAlign="Center">
+												<Text text="ZONA"/>
+												<tab:template>
+													<Label text="{myParam>ZONA}" wrapping="true"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="Bandeja de solicitudes"/>
+												<tab:template>
+													<Avatar src="sap-icon://sap-box" displaySize="XS" visible="{path: 'myParam>BAND_S_CHECK',formatter: '.txtVisibleForm'}"
+														displayShape="Square"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="Bandeja de anticipos"/>
+												<tab:template>
+													<Avatar src="sap-icon://travel-expense" displaySize="XS" visible="{path: 'myParam>BAND_A_CHECK',formatter: '.txtVisibleForm'}"
+														displayShape="Square"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="Liberador de anticipos/liquidaciones"/>
+												<tab:template>
+													<Avatar src="sap-icon://travel-expense-report" displaySize="XS" visible="{path: 'myParam>LIB_CHECK',formatter: '.txtVisibleForm'}"
+														displayShape="Square"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="Bandeja de liquidaciones"/>
+												<tab:template>
+													<Avatar src="sap-icon://batch-payments" displaySize="XS" visible="{path: 'myParam>BAND_L_CHECK',formatter: '.txtVisibleForm'}"
+														displayShape="Square"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="Administrador de datos"/>
+												<tab:template>
+													<Avatar src="sap-icon://key-user-settings" displaySize="XS" visible="{path: 'myParam>ADM_DATOS',formatter: '.txtVisibleForm'}"
+														displayShape="Square"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="Bandeja aprobación jefatura"/>
+												<tab:template>
+													<Avatar src="sap-icon://accept" displaySize="XS" visible="{path: 'myParam>BAND_1_CHECK',formatter: '.txtVisibleForm'}"
+														displayShape="Square"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="Bandeja aprobación flota"/>
+												<tab:template>
+													<Avatar src="sap-icon://accept" displaySize="XS" visible="{path: 'myParam>BAND_2_CHECK',formatter: '.txtVisibleForm'}"
+														displayShape="Square"/>
+												</tab:template>
+											</tab:Column> -->
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="Acción"/>
+												<tab:template>
+													<HBox>
+														<Button tooltip="Editar usuario" text="Editar" icon="sap-icon://edit" type="Accept" press=".onPressEditarUsuario"/>
+														<Button tooltip="Eliminar usuario" text="Eliminar" icon="sap-icon://delete" type="Reject" press=".pressEliminarUsuario($event)"/>
+													</HBox>
+												</tab:template>
+											</tab:Column>
+										</tab:columns>
+									</tab:Table>
+								</content>
+							</IconTabFilter> 
+							<IconTabFilter key="grupoLiberacion" text="G. Liberacion" count="{myParam>/listaGrupoLiberacion/length}" icon="sap-icon://travel-expense-report">
+								<content>
+									<tab:Table id="idTableGrupoLiberacion" sort="sortDeliveryDate" rows="{ path: 'myParam>/listaGrupoLiberacion'}" selectionMode="None" width="100%">
+										<tab:extension>
+                                        	<OverflowToolbar>
+												<core:Icon src="sap-icon://travel-expense-report" alt="Cart" size="1.25rem"/>
+												<Title text="Tabla de grupo de liberacion ({myParam>/listaGrupoLiberacion/length})" />
+												<ToolbarSpacer/>
+												 <Button text="Añadir grupo liberacion" type="Transparent" icon="sap-icon://sys-add" press="onPressCreaGrupoLiberacion"/>
+												 <Button text="Descargar excel" type="Transparent" icon="sap-icon://excel-attachment" press="onPressExcelGrupoLiberacion"/>
+											</OverflowToolbar>
+                                    	</tab:extension>
+										<tab:noData>
+											<Link class="sapUiMediumMargin" text="No se hallaron los grupos de liberacion."/>
+										</tab:noData>
+										<tab:columns>
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="ID"/>
+												<tab:template>
+													<Label text="{myParam>GPO_LIB}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="TIPO"/>
+												<tab:template>
+													<Label text="{myParam>TIPO}"/>
+												</tab:template>
+											</tab:Column>
+											 <tab:Column width="20%" hAlign="Center">
+												<Text text="Aprobador 1"/>
+												<tab:template>
+													<Label text="{myParam>USR_AP_N1}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="Aprobador 2"/>
+												<tab:template>
+													<Label text="{myParam>USR_AP_N2}"/>
+												</tab:template>
+											</tab:Column>
+											 <tab:Column width="20%" hAlign="Center">
+												<Text text="Acción"/>
+												<tab:template>
+													<HBox>
+														<Button text="Editar" tooltip="Editar" icon="sap-icon://edit" type="Accept" press=".onPressEditarGrupoLiberacion($event)"/> 
+														<Button text="Eliminar" icon="sap-icon://delete" type="Reject" press=".pressEliminarGrupoLiberacion($event)"/>
+													</HBox>
+												</tab:template>
+											</tab:Column> 
+										</tab:columns>
+									</tab:Table>
+								</content>
+							</IconTabFilter> 
+							<IconTabFilter key="grupoActivacion" text="Activacion" count="{myParam>/listaGrupoActivacion/length}" icon="sap-icon://action-settings">
+								<content>
+									<tab:Table id="idTableActivacion" sort="sortDeliveryDate" rows="{ path: 'myParam>/listaGrupoActivacion'}" selectionMode="None" width="100%">
+										<tab:extension>
+                                        	<OverflowToolbar>
+												<core:Icon src="sap-icon://action-settings" alt="Cart" size="1.25rem"/>
+												<Title text="Tabla de activacion ({myParam>/listaGrupoActivacion/length})" />
+												<ToolbarSpacer/>
+											</OverflowToolbar>
+                                    	</tab:extension>
+										<tab:noData>
+											<Link class="sapUiMediumMargin" text="No se hallaron validaciones para activar."/>
+										</tab:noData>
+										<tab:columns>
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="SOCIEDAD"/>
+												<tab:template> 
+   													<Text text="{myParam>SOCIEDAD}" />
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="DESCRIPCION"/>
+												<tab:template> 
+   													<Text text="{myParam>DESC_VAL}" />
+												</tab:template>
+											</tab:Column> 
+											 <tab:Column width="20%" hAlign="Center">
+												<Text text="Acción"/>
+												<tab:template>
+													<HBox>
+														<CheckBox selected="{path: 'myParam>EST_VAL', formatter: '.formatXtoBoolean'}" select="onPressActivacionSunat" editable="true"/>   
+													</HBox>
+												</tab:template>
+											</tab:Column> 
+										</tab:columns>
+									</tab:Table>
+								</content>
+							</IconTabFilter> 
+							<!-- <IconTabFilter key="ruc" text="Servicio RUC"  icon="sap-icon://building"
+								iconColor="Negative">
+								<content>
+									<Toolbar>
+											<Title level="H3" text="Validación de RUC:"/>
+											<SegmentedButton id="idSegmentRuc" selectedKey="inh" selectionChange="changeServicioRUC">
+												<items>
+													<SegmentedButtonItem text="Habilitado" key="hab" icon="sap-icon://connected"/>
+													<SegmentedButtonItem text="Deshabilitado" key="inh" icon="sap-icon://disconnected"/>
+												</items>
+											</SegmentedButton>
+									</Toolbar>
+								</content>
+							</IconTabFilter>--> 
+							<!-- <IconTabFilter key="centro" text="Relación Usuario-Ceco" count="{myParam>/relacionUsuarioCeco/length}" icon="sap-icon://lead">
+								<content>
+									<tab:Table id="idTabla_relacionUsuarioCeco" sort="sortDeliveryDate" rows="{ path: 'myParam>/relacionUsuarioCeco'}" width="100%">
+										<tab:extension>
+                                        	<OverflowToolbar >
+												<core:Icon src="sap-icon://activity-items" alt="Cart" size="1.25rem"/>
+												<Title text="Tabla de Usuario-Ceco ({myParam>/relacionUsuarioCeco/length})" />
+												<ToolbarSpacer/>
+												<SearchField id="idFiltroBusq_relacionUsuarioCeco" width="50%" placeholder="Filtrar Usuario-Ceco..." liveChange="onSearch_relacionUsuarioCeco"/>
+												<Button text="Añadir Usuario-Ceco" type="Transparent" icon="sap-icon://sys-add" press="onPressCrear_relacionUsuarioCeco"/>
+												<Button text="Descargar excel" type="Transparent" icon="sap-icon://excel-attachment" press=".onPressExcel_relacionUsuarioCeco('idTabla_relacionUsuarioCeco','Reporte_relacionUsuarioCeco')"/>
+											</OverflowToolbar>
+                                    	</tab:extension>
+										<tab:noData>
+											<Link class="sapUiMediumMargin" text="No se hallaron Usuarios-Ceco ."/>
+										</tab:noData>
+										<tab:columns>
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="Usuario centro"/>
+												<tab:template>
+													<Label text="{myParam>ID_UC}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="Usuario SAP"/>
+												<tab:template>
+													<Label text="{myParam>USR_SAP}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="ID Centro"/>
+												<tab:template>
+													<Label text="{myParam>ID_CENTRO}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="20%"  hAlign="Center">
+												<Text text="Orden estadística (Placa)"/>
+												<tab:template>
+													<Label text="{myParam>PLACA}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="20%"  hAlign="Center">
+												<Text text="Limite por alimento"/>
+												<tab:template>
+													<Label text="{myParam>LIMITE}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="Acción"/>
+												<tab:template>
+													<Toolbar height="auto">
+														<Button tooltip="Editar" icon="sap-icon://edit" type="Accept" press=".pressEditar_relacionUsuarioCeco"/>
+														<Button text="Eliminar" icon="sap-icon://delete" type="Reject" press=".pressEliminar_relacionUsuarioCeco"/>
+													</Toolbar>
+												</tab:template>
+											</tab:Column>
+										</tab:columns>
+									</tab:Table>
+								</content>
+							</IconTabFilter> --> 
+							<!-- <IconTabFilter key="centro" text="Orden Estadística - Descripción Orden Estadística" count="{myParam>/tbListOrdenes/length}" icon="sap-icon://lead">
+								<content>
+									<tab:Table id="idTabla_userOrdenDescripEstadistica" sort="sortDeliveryDate" rows="{ path: 'myParam>/tbListOrdenes'}" width="100%">
+										<tab:extension>
+                                        	<OverflowToolbar >
+												<core:Icon src="sap-icon://activity-items" alt="Cart" size="1.25rem"/> 
+												<Title text="Orden Estadística - Descripción Orden Estadística ({myParam>/tbListOrdenes/length})" />
+												<ToolbarSpacer/>
+												<SearchField id="idFiltroBusq_userOrdenDescripEstadistica" width="30%" placeholder="Filtrar Orden Estadìstica - Descripción Orden Estadística..." liveChange="onSearchuserOrdenDescripEstadistica"/>
+												<Button text="Añadir Orden" tooltip="Añadir Orden Estadística" width="150px" type="Transparent" icon="sap-icon://sys-add" press="onPressCrear_userOrdenDescripEstadistica"/> 
+												<Button text="Descargar excel" type="Transparent" width="150px" icon="sap-icon://excel-attachment" press=".onPressExcel_userOrdenDescripEstadistica('idTabla_userOrdenDescripEstadistica','Reporte_userOrdenDescripEstadistica')"/>
+											</OverflowToolbar>
+                                    	</tab:extension>
+										<tab:noData>
+											<Link class="sapUiMediumMargin" text="No se hallaron Orden Estadìstica - Descripción Orden Estadística ."/>
+										</tab:noData>
+										<tab:columns>
+											
+											<tab:Column hAlign="Center">
+												<Text text="Id orden e." />
+												<tab:template>
+													<Label text="{myParam>ID_ORDEN}" />
+												</tab:template>
+											</tab:Column>
+											<tab:Column hAlign="Center">
+												<Text text="Descripción Orden estadístico" />
+												<tab:template>
+													<Label text="{myParam>DES_ORDEN}"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="20%" hAlign="Center">
+												<Text text="Acción"/>
+												<tab:template>
+													<Button text="Eliminar" icon="sap-icon://delete" type="Reject" press=".pressEliminar_userOrdenDescripEstadistica($event)"/>
+												</tab:template>
+											</tab:Column>
+										</tab:columns>
+									</tab:Table>
+								</content>
+							</IconTabFilter>--> 
+							<!-- <IconTabFilter key="orden" text="Conceptos" count="{myParam>/tbListUsersLimite/length}" icon="sap-icon://customer-and-supplier" visible="false">
+								<content>
+									<tab:Table id="idTableOrden" sort="sortDeliveryDate" rows="{ path: 'myParam>/tbListUsersLimite'}" width="100%">
+										<tab:extension>
+                                        	<OverflowToolbar >
+												<core:Icon src="sap-icon://customer-and-supplir" alt="Cart" size="1.25rem"/>
+												<Title text="Tabla de Conceptos ({myParam>/tbListUsersLimite/length})" />
+												<ToolbarSpacer/>
+												<SearchField id="idFiltroTableOrden" width="50%" placeholder="Filtrar Concepto ..." liveChange="onSearchOrden"/>
+												<Button text="Añadir Concepto" type="Transparent" icon="sap-icon://sys-add" press="onPressCreaOrden"/>
+											</OverflowToolbar>
+                                    	</tab:extension>
+										<tab:noData>
+											<Link class="sapUiMediumMargin" text="No se hallaron conceptos."/>
+										</tab:noData>
+										<tab:columns>
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="ID usuario login"/>
+												<tab:template>
+													<Label text="{myParam>ID_UL}" wrapping="true"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="Usuario SAP"/>
+												<tab:template>
+													<Label text="{myParam>USR_SAP}" wrapping="true"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="Limite"/>
+												<tab:template>
+													<Label text="{myParam>LIMITE}" wrapping="true"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="ID concepto"/> 
+												<tab:template>
+													<Label text="{path: 'myParam>ID_CONCEPTO', formatter: '.formattConcepto'}" wrapping="true"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="Acción"/>
+												<tab:template>
+													<Toolbar height="auto">
+														<Button tooltip="Editar Orden" icon="sap-icon://edit" type="Accept" press=".onPressEditarOrden"/>
+														<Button tooltip="Eliminar Orden" icon="sap-icon://delete" type="Reject" press=".pressEliminarOrden"/>
+													</Toolbar>
+												</tab:template>
+											</tab:Column>
+										</tab:columns>
+									</tab:Table>
+								</content>
+							</IconTabFilter>--> 
+							<!-- <IconTabFilter key="areasUser" text="Rendidor Aprobadores" count="{myParam>/tbListUsersRendUni/length}" icon="sap-icon://customer-and-supplier"
+								iconColor="Negative">
+								<content>
+									<tab:Table id="idTableAreaUser" sort="sortDeliveryDate" rows="{ path: 'myParam>/tbListUsersRendUni'}" width="100%">
+										<tab:extension>
+                                        	<OverflowToolbar >
+												<core:Icon src="sap-icon://customer-and-supplir" alt="Cart" size="1.25rem"/>
+												<Title text="Tabla de aprobadores ({myParam>/tbListUsersRendUni/length})" />
+												<ToolbarSpacer/>
+												<SearchField id="idFiltroBusqAreaUser" width="50%" placeholder="Filtrar usuario ..." liveChange="onSearchAreaUser"/>
+												<Button text="Añadir" type="Transparent" icon="sap-icon://sys-add" press="onPressCreaAreaUser"/> 
+											</OverflowToolbar>
+                                    	</tab:extension>
+										<tab:noData>
+											<Link class="sapUiMediumMargin" text="No se hallaron los usuarios."/>
+										</tab:noData>
+										<tab:columns>
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="ID"/>
+												<tab:template>
+													<Label text="{myParam>ID}" wrapping="true"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="Usr. Rendidor"/>
+												<tab:template>
+													<Label text="{path: 'myParam>USUARIO_RENDIDOR', formatter: '.userSapFormato'}" wrapping="true"/>
+												</tab:template>
+											</tab:Column>
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="Usr. Liberador"/>
+												<tab:template>
+													<Label text="{path: 'myParam>USUARIO_LIBERADOR', formatter: '.userSapFormato'}" wrapping="true"/>
+												</tab:template>
+											</tab:Column> 
+											<tab:Column width="15%" hAlign="Center">
+												<Text text="Acción"/>
+												<tab:template>
+													<Toolbar height="auto">
+														<Button tooltip="Editar" icon="sap-icon://edit" type="Accept" press=".onPressEditarAreaUser"/>
+														<Button tooltip="Eliminar" icon="sap-icon://delete" type="Reject" press=".pressEliminarAreaUser"/>
+													</Toolbar>
+												</tab:template>
+											</tab:Column>
+										</tab:columns>
+									</tab:Table>
+								</content>
+							</IconTabFilter>-->
+						</items>
+					</IconTabBar>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

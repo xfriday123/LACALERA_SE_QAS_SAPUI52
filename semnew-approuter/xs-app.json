@@ -1,0 +1,47 @@
+{
+  "welcomeFile": "/index.html",
+  "logout": {
+      "logoutEndpoint": "/logout",
+      "logoutPage": "/index.html"
+  },
+  "authenticationMethod": "route",
+  "routes": [
+      {
+          "source": "^/cpblcase/(.*)$",
+          "target": "/$1",
+          "destination": "Capblcase"
+      },
+      {
+          "source": "^/resources/(.*)$",
+          "target": "/nsnewuisemnew/resources/$1",
+          "authenticationType": "none",
+          "destination": "ui5"
+      },
+      {
+          "source": "^/test-resources/(.*)$",
+          "target": "/nsnewuisemnew/test-resources/$1",
+          "authenticationType": "none",
+          "destination": "ui5"
+      },
+      {
+          "source": "^(.*)$",
+          "target": "/nsnewuisemnew/$1",
+          "service": "html5-apps-repo-rt",
+          "authenticationType": "xsuaa"
+      },
+      {
+          "source": "^/logout$",
+          "target": "/nsnewuisemnew/logout",
+          "service": "html5-apps-repo-rt",
+          "authenticationType": "none"
+      },
+      {
+          "source": "^/logout.html$",
+          "target": "/nsnewuisemnew/logout.html",
+          "service": "html5-apps-repo-rt",
+          "authenticationType": "none",
+          "cacheControl": "no-cache, no-store, must-revalidate"
+      }
+
+  ]
+}

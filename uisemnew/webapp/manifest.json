@@ -1,0 +1,274 @@
+{
+  "_version": "1.59.0",
+  "sap.app": {
+    "id": "nsnew.uisemnew",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.14.4",
+      "toolsId": "fd960033-c791-4347-bdb8-b671e6c5df31"
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.127.1",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.f": {},
+        "sap.suite.ui.generic.template": {},
+        "sap.ui.comp": {},
+        "sap.ui.generic.app": {},
+        "sap.ui.table": {},
+        "sap.ushell": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "nsnew.uisemnew.i18n.i18n"
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "async": true,
+        "viewPath": "nsnew.uisemnew.view",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "clearControlAggregation": false
+      },
+      "routes": [
+        {
+          "name": "Vista_Menu_Principal",
+          "pattern": ":?query:",
+          "target": [
+            "Vista_Menu_Principal"
+          ]
+        },
+        {
+          "name": "Vista_Bandeja_Solicitud",
+          "pattern": "Vista_Bandeja_Solicitud",
+          "target": [
+              "Vista_Bandeja_Solicitud"
+          ]
+        }, 
+        {
+          "name": "Vista_Administrador",
+          "pattern": "Vista_Administrador",
+          "target": [
+              "Vista_Administrador"
+          ]
+        },
+        {
+          "name": "Vista_Bandeja_Anticipo",
+          "pattern": "Vista_Bandeja_Anticipo",
+          "target": [
+              "Vista_Bandeja_Anticipo"
+          ]
+        },
+        {
+            "name": "Vista_Bandeja_Liquidacion",
+            "pattern": "Vista_Bandeja_Liquidacion",
+            "target": [
+                "Vista_Bandeja_Liquidacion"
+          ]
+        },               
+        {
+          "name": "Vista_Crear_Anticipo",
+          "pattern": "Vista_Crear_Anticipo",
+          "target": [
+              "Vista_Crear_Anticipo"
+          ]
+        },
+        {
+            "name": "Vista_Crear_Liquidacion",
+            "pattern": "Vista_Crear_Liquidacion",
+            "target": [
+                "Vista_Crear_Liquidacion"
+            ]
+        },
+        {
+            "name": "Vista_Detalle_Solicitud",
+            "pattern": "Vista_Detalle_Solicitud",
+            "target": [
+                "Vista_Detalle_Solicitud"
+            ]
+        },
+        {
+            "name": "Vista_Editar_Liquidacion",
+            "pattern": "Vista_Editar_Liquidacion",
+            "target": [
+                "Vista_Editar_Liquidacion"
+            ]
+        },
+        {
+            "name": "Vista_Historial_Aprobado",
+            "pattern": "Vista_Historial_Aprobado",
+            "target": [
+                "Vista_Historial_Aprobado"
+            ]
+        },
+        {
+            "name": "Vista_Liberador_Anticipo",
+            "pattern": "Vista_Liberador_Anticipo",
+            "target": [
+                "Vista_Liberador_Anticipo"
+            ]
+        },
+        {
+            "name": "Vista_Liberador_Liquidacion",
+            "pattern": "Vista_Liberador_Liquidacion",
+            "target": [
+                "Vista_Liberador_Liquidacion"
+            ]
+        },
+        {
+          "name": "Vista_Inicio",
+          "pattern": "Vista_Inicio",
+          "target": [
+              "Vista_Inicio"
+          ]
+        }
+
+      ],
+      "targets": {
+        "Vista_Menu_Principal": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Vista_Menu_Principal",
+          "viewName": "Vista_Menu_Principal"
+        },
+        "Vista_Bandeja_Solicitud": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "Vista_Bandeja_Solicitud",
+                    "viewName": "Vista_Bandeja_Solicitud"
+        },
+        "Vista_Bandeja_Anticipo": {
+                  "viewType": "XML",
+                  "transition": "slide",
+                  "clearControlAggregation": false,
+                  "viewId": "Vista_Bandeja_Anticipo",
+                  "viewName": "Vista_Bandeja_Anticipo"
+        },
+        "Vista_Administrador": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Vista_Administrador",
+          "viewName": "Vista_Administrador"
+      },
+      "Vista_Bandeja_Liquidacion": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Vista_Bandeja_Liquidacion",
+          "viewName": "Vista_Bandeja_Liquidacion"
+      },
+      "Vista_Crear_Anticipo": {
+        "viewType": "XML",
+        "transition": "slide",
+        "clearControlAggregation": false,
+        "viewId": "Vista_Crear_Anticipo",
+        "viewName": "Vista_Crear_Anticipo"
+    },
+    "Vista_Crear_Liquidacion": {
+        "viewType": "XML",
+        "transition": "slide",
+        "clearControlAggregation": false,
+        "viewId": "Vista_Crear_Liquidacion",
+        "viewName": "Vista_Crear_Liquidacion"
+    },
+    "Vista_Detalle_Solicitud": {
+        "viewType": "XML",
+        "transition": "slide",
+        "clearControlAggregation": false,
+        "viewId": "Vista_Detalle_Solicitud",
+        "viewName": "Vista_Detalle_Solicitud"
+    },
+    "Vista_Editar_Liquidacion": {
+        "viewType": "XML",
+        "transition": "slide",
+        "clearControlAggregation": false,
+        "viewId": "Vista_Editar_Liquidacion",
+        "viewName": "Vista_Editar_Liquidacion"
+    },
+    "Vista_Historial_Aprobado": {
+        "viewType": "XML",
+        "transition": "slide",
+        "clearControlAggregation": false,
+        "viewId": "Vista_Historial_Aprobado",
+        "viewName": "Vista_Historial_Aprobado"
+    },
+    "Vista_Liberador_Anticipo": {
+        "viewType": "XML",
+        "transition": "slide",
+        "clearControlAggregation": false,
+        "viewId": "Vista_Liberador_Anticipo",
+        "viewName": "Vista_Liberador_Anticipo"
+    },
+    "Vista_Liberador_Liquidacion": {
+        "viewType": "XML",
+        "transition": "slide",
+        "clearControlAggregation": false,
+        "viewId": "Vista_Liberador_Liquidacion",
+        "viewName": "Vista_Liberador_Liquidacion"
+    },
+    "Vista_Inicio": {
+        "viewType": "XML",
+        "transition": "slide",
+        "clearControlAggregation": false,
+        "viewId": "Vista_Inicio",
+        "viewName": "Vista_Inicio"
+    }        
+      }
+    },
+    "rootView": {
+      "viewName": "nsnew.uisemnew.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "App"
+    }
+  }
+}

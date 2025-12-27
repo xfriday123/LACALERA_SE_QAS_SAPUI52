@@ -1,0 +1,100 @@
+<mvc:View controllerName="nsnew.uisemnew.controller.Vista_Menu_Principal" xmlns="sap.m"  xmlns:m="sap.m" xmlns:layout="sap.ui.layout"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns:core="sap.ui.core" xmlns:html="http://www.w3.org/1999/xhtml">
+	<m:Page showHeader="false" class="page_background_img_principal">
+		<m:content>
+			<FlexBox alignItems="Center" justifyContent="SpaceBetween">
+				<FlexBox alignContent="Center" alignItems="Center" justifyContent="Start">
+					<ComboBox id="cmb_lista_empresa_seleccionable" items="{ path: 'myParam>/lista_empresas_ruc'}" placeholder="- Seleccione RUC de empresa" required="true"
+						width="235px" change="f_change_lista_empresa" visible="true" class="sapUiTinyMarginBegin">
+						<core:Item key="{myParam>SOCIEDAD}" text="{myParam>SOCIEDAD} - {myParam>DESC_SOC}"/>
+					</ComboBox>					
+					<layoutData>
+						<FlexItemData growFactor="1"  />
+					</layoutData>
+				</FlexBox>
+				<FlexBox alignContent="Center" alignItems="Center" justifyContent="Center" visible="false" >  
+					<Panel>
+						<content>
+							<Input id="txt_id_usuario_promt" visible="false"/>
+							<Button id="btn_selecciona_usuario" text="Validar" press="f_testUserSelect" type="Transparent" visible="false"/>
+						</content>
+					</Panel>
+					<layoutData>
+						<FlexItemData growFactor="1" />
+					</layoutData>
+				</FlexBox>
+				<FlexBox alignContent="Center" alignItems="Center" justifyContent="End">
+					<m:Text  id="lbl_nombre_usuario" text="{myParam>/usuario}" class="sapUiTinyMarginEnd white"/>
+					<core:Icon src="sap-icon://customer" class="sapUiTinyMarginEnd" color="white"></core:Icon>
+					<m:Button icon="sap-icon://log" tooltip="Cerrar sesión" press="f_logout" type="Emphasized" class="sapUiTinyMarginEnd"/>
+					<layoutData>
+						<FlexItemData growFactor="1"  />
+					</layoutData>
+				</FlexBox>
+			</FlexBox>
+			<layout:Grid defaultSpan="L12 M12 S12" >
+				<layout:content>
+					<m:VBox>
+						<layout:HorizontalLayout></layout:HorizontalLayout>
+						<layout:HorizontalLayout></layout:HorizontalLayout>
+						<HBox alignItems="Center" alignContent="Center" justifyContent="Center" width="100%">
+							<Image class="sapUiSmallMarginTop sapUiSmallMarginBottom sapUiTinyMarginBegin" width="95%" src="../img/logo_rebranding1_smartexpenses.png" />
+						</HBox>
+					</m:VBox>
+					<m:VBox>
+						<layout:HorizontalLayout></layout:HorizontalLayout>
+						<layout:HorizontalLayout></layout:HorizontalLayout>
+						<m:HBox justifyContent="Center" wrap="Wrap">
+							<m:GenericTile id="tile_bandeja_solicitud" visible="true" class="sapUiTinyMarginBegin sapUiTinyMarginTop  " header="Bandeja de solicitudes" press="pressBandejaSolicitud">
+								<m:TileContent>
+									<m:ImageContent src="sap-icon://sap-box"/>
+								</m:TileContent>
+							</m:GenericTile>
+						
+							<m:GenericTile id="tile_aprobacion_anticipos" visible="true" class="sapUiTinyMarginBegin sapUiTinyMarginTop  " header="Aprobación de anticipos" press="pressLiberadorAnticipo">
+								<m:TileContent>
+									<!-- <m:NumericContent id="idNumericContent01" value="0" icon="sap-icon://travel-expense-report" withMargin="false" /> -->
+									<m:ImageContent src="sap-icon://payment-approval"/>
+								</m:TileContent>
+							</m:GenericTile>
+							<m:GenericTile id="tile_aprobacion_liquidacion"  visible="true" class="sapUiTinyMarginBegin sapUiTinyMarginTop  " header="Aprobación de Liquidaciones" press="pressLiberadorLiquidacion">
+								<m:TileContent>
+									<!-- <m:NumericContent id="idNumericContent02" value="0" icon="sap-icon://travel-expense-report" withMargin="false" /> -->
+									<m:ImageContent src="sap-icon://accounting-document-verification"/>
+								</m:TileContent>
+							</m:GenericTile>									
+							<m:GenericTile id="tile_administrador_datos" visible="true" class="sapUiTinyMarginBegin sapUiTinyMarginTop  " header="Administrador de datos" press="pressAdministrador">
+								<m:TileContent>
+									<m:ImageContent src="sap-icon://action-settings"/>
+								</m:TileContent>
+							</m:GenericTile>
+							<m:GenericTile id="tile_historial_aprobaciones" visible="true" class="sapUiTinyMarginBegin sapUiTinyMarginTop  " header="Historial de aprobaciones" press="pressHistorial">
+								<m:TileContent>
+									<m:ImageContent src="sap-icon://history"/>
+								</m:TileContent>
+							</m:GenericTile>
+						</m:HBox>
+						<HBox height="80px">
+					</HBox>
+					<FlexBox alignItems="Center" justifyContent="End" class="sapUiMediumMarginTop"> 
+                            <Image id="myImage" src="../img/ayuda.png" width="25rem"  press="f_open_ayuda" class="sapUiMediumMarginEnd"/>
+					</FlexBox>
+					
+					</m:VBox>
+				</layout:content>
+			</layout:Grid>
+		</m:content>
+	</m:Page>
+
+	
+	
+	
+	<Dialog id="ayudaDialog" title="Buzón de Ayuda" class="sapUiContentPadding" stretch="false" draggable="true">
+		<content>
+			<html:iframe id="ayudaIframe" width="450rem" height="600px" src="" frameborder="0"> </html:iframe>
+		</content>
+		<endButton>
+			<Button text="Cerrar" press="onCloseDialog" />
+		</endButton>
+	</Dialog>
+</mvc:View>

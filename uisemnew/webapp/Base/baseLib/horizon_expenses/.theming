@@ -1,0 +1,205 @@
+{
+	"mVersionDependency": {
+		"Base.baseLib.sap_horizon": "11.18.0",
+		"Base.baseLib": "11.18.0",
+		"Base": "11.18.0"
+	},
+	"sEntity": "Theme",
+	"sId": "horizon_expenses",
+	"sLabel": "SmartExpenses Horizon",
+	"sVendor": "Ludwig Angel",
+	"oExtends": "Base.baseLib.sap_horizon",
+	"aFiles": [
+		"base",
+		"preview",
+		"css_variables",
+		"skeleton",
+		"custom"
+	],
+	"sTextDirections": "LTR",
+	"sType": "STANDARD",
+	"sThemability": "PUBLIC",
+	"mData": {
+		"mThemeMasterState": {
+			"mSourceInfo": {
+				"sCreated": "2024-09-09T19:55:16.546Z",
+				"sLastModified": "2024-09-09T23:01:27.319Z",
+				"aVersionHistory": [
+					{
+						"sDate": "2024-09-09T22:48:41.948Z",
+						"mVersion": {
+							"Base": "11.18.0",
+							"UR": "10.30.7.400005.0",
+							"UI5": "1.128.0"
+						}
+					},
+					{
+						"sDate": "2024-09-09T22:16:16.456Z",
+						"mVersion": {
+							"Base": "11.18.0",
+							"UI5": "1.128.0"
+						}
+					},
+					{
+						"sDate": "2024-09-09T19:55:16.546Z",
+						"mVersion": {
+							"Base": "11.18.0",
+							"UR": "10.30.7.400005.0",
+							"UI5": "1.128.0"
+						}
+					}
+				]
+			},
+			"mBuildInfo": {
+				"sLastBuilt": "2024-09-09T23:01:32.217Z",
+				"mVersion": {
+					"Base": "11.18.0",
+					"UR": "10.30.7.400005.0",
+					"UI5": "1.128.0"
+				}
+			}
+		}
+	},
+	"sReleaseStage": "GENERAL_AVAILABILITY",
+	"sDeploymentType": "MANUAL",
+	"aBadgeParameters": [
+		{
+			"Id": "sapBrandColor",
+			"CssValue": "#3b3fb5",
+			"Label": "Brand Color",
+			"Tags": "Quick,Base,Color,Mobile"
+		},
+		{
+			"Id": "sapHighlightColor",
+			"CssValue": "#3538a2",
+			"Label": "Highlight Color",
+			"Tags": "Quick,Base,Content,Color"
+		},
+		{
+			"Id": "sapBaseColor",
+			"CssValue": "#fff",
+			"Label": "Base Color",
+			"Tags": "Quick,Base,Color,Mobile"
+		},
+		{
+			"Id": "sapShellColor",
+			"CssValue": "#6d92e8",
+			"Label": "Shell Header Color",
+			"Tags": "Quick,Base,Shell,Color,Mobile"
+		},
+		{
+			"Id": "sapBackgroundColor",
+			"CssValue": "#f5f6f7",
+			"Label": "Background Color",
+			"Tags": "Quick,Base,Color,Mobile"
+		},
+		{
+			"Id": "sapTextColor",
+			"CssValue": "#1d2d3e",
+			"Label": "Text Color",
+			"Tags": "Quick,Base,Content,Color,Font,Mobile"
+		},
+		{
+			"Id": "sapLinkColor",
+			"CssValue": "#3538a2",
+			"Label": "Link Color",
+			"Tags": "Quick,Base,Content,Color,Font,Link"
+		},
+		{
+			"Id": "sapContent_Selected_TextColor",
+			"CssValue": "#3538a2",
+			"Label": "Selected Text Color",
+			"Tags": "Base,Content,Color,Font"
+		},
+		{
+			"Id": "sapContent_Shadow0",
+			"CssValue": "0 0 0.125rem 0 rgba(53,56,162,0.2), 0 0.125rem 0.25rem 0 rgba(53,56,162,0.2)",
+			"Label": "Shadow Level 0",
+			"Tags": "Base,Content"
+		},
+		{
+			"Id": "sapField_Background",
+			"CssValue": "#eff1f2",
+			"Label": "Field Background Color",
+			"Tags": "Base,Field,Color"
+		},
+		{
+			"Id": "sapField_BorderColor",
+			"CssValue": "#556b81",
+			"Label": "Field Border Color",
+			"Tags": "Base,Field,Color"
+		},
+		{
+			"Id": "sapShell_Background",
+			"CssValue": "#eff1f2",
+			"Label": "Shell Background Color",
+			"Tags": "Base,Shell,Color"
+		},
+		{
+			"Id": "sapShell_TextColor",
+			"CssValue": "#fff",
+			"Label": "Shell Text Color",
+			"Tags": "Base,Shell,Color,Font,Mobile"
+		},
+		{
+			"Id": "sapShell_InteractiveTextColor",
+			"CssValue": "#fff",
+			"Label": "Shell Interactive Text Color",
+			"Tags": "Base,Shell,Color,Font"
+		},
+		{
+			"Id": "sapShell_GroupTitleTextColor",
+			"CssValue": "#3538a2",
+			"Label": "Shell Group Title Text Color",
+			"Tags": "Base,Shell,Color,Font"
+		},
+		{
+			"Id": "sapShell_Shadow",
+			"CssValue": "0 0.125rem 0.125rem 0 rgba(53,56,162,0.15), inset 0 -0.0625rem 0 0 rgba(53,56,162,0.2)",
+			"Label": "Shell Shadow",
+			"Tags": "Base,Shell"
+		},
+		{
+			"Id": "sapShell_Navigation_Background",
+			"CssValue": "#6d92e8",
+			"Label": "Shell Navigation Area Background",
+			"Tags": "Base,Shell,Color"
+		},
+		{
+			"Id": "sapShell_Navigation_TextColor",
+			"CssValue": "#fff",
+			"Label": "Shell Navigation Text Color",
+			"Tags": "Base,Shell,Color,Font"
+		},
+		{
+			"Id": "sapTile_Background",
+			"CssValue": "#fff",
+			"Label": "Tile Background Color",
+			"Tags": "Base,Tile,Color"
+		},
+		{
+			"Id": "sapTile_BorderColor",
+			"CssValue": "transparent",
+			"Label": "Tile Border Color",
+			"Tags": "Base,Tile,Color"
+		},
+		{
+			"Id": "sapTile_BorderCornerRadius",
+			"CssValue": "1rem",
+			"Label": "Tile Border Corner Radius",
+			"Tags": "Base,Tile,Dimension"
+		},
+		{
+			"Id": "sapTile_TextColor",
+			"CssValue": "#3538a2",
+			"Label": "Tile Text Color",
+			"Tags": "Base,Tile,Color,Font"
+		},
+		{
+			"Id": "sapTile_TitleTextColor",
+			"CssValue": "#3538a2",
+			"Label": "Tile Title Text Color",
+			"Tags": "Base,Tile,Color,Font"
+		}
+	]
+}

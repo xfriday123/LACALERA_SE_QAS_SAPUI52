@@ -1,0 +1,200 @@
+<mvc:View 
+xmlns:core="sap.ui.core" 
+xmlns:mvc="sap.ui.core.mvc" 
+xmlns="sap.m"  
+displayBlock="true"	  
+xmlns:u="sap.ui.unified" 
+xmlns:tab="sap.ui.table"
+xmlns:l="sap.ui.layout"  
+xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" 
+xmlns:f="sap.ui.layout.form"
+controllerName="nsnew.uisemnew.controller.Vista_Bandeja_Solicitud" 
+xmlns:html="http://www.w3.org/1999/xhtml">
+	<App>
+		 <pages>
+			<Page class="page_background_img" showHeader="false">
+				<content>   
+					<l:ResponsiveSplitter defaultPane="default">
+						<l:PaneContainer resize=".onRootContainerResize">
+							<l:SplitPane requiredParentWidth="250" id="default_solicitud"> 
+								<Page backgroundDesign="List">
+									 <customHeader>
+										<Bar>
+											<contentLeft>
+												<Button icon="sap-icon://nav-back" press="f_press_volver"/>
+											</contentLeft>
+											<contentMiddle>
+												<Toolbar>
+													<Title level="H3" text="Bandeja de solicitudes"/>
+													<core:Icon src="sap-icon://sap-box"></core:Icon>
+												</Toolbar>
+											</contentMiddle>
+										</Bar>
+									</customHeader>
+									<content>
+										<OverflowToolbar height="auto" width="100%">
+											<Label text="Tabla de solicitudes ({ path: 'myParam>/lista_bandeja_solicitud/length'})" />
+											<Button icon="sap-icon://create-form" press="f_agregar_solicitud_fragment" type="Transparent" text="Nuevo"/>
+											<ComboBox id="idTipoDoc" editable="true" items="{ path: 'myParam>/T_EST_SOL'}" selectionChange="onSelectEstado"
+												placeholder="- Seleccione estado" required="true" width="160px">
+												<core:Item key="{myParam>id}" text="{myParam>id} - {myParam>descripcion}"/>
+											</ComboBox>
+											<SearchField id="txt_filtro_busqueda" width="160px" placeholder="Filtrar solicitud ..." liveChange="f_filtrar_solicitud"/>
+											
+										</OverflowToolbar>
+										<List id="list_tabla_solicitud" items="{path: 'myParam>/lista_bandeja_solicitud', sorter: { path: 'FEC_CREA', descending: true }}" itemPress="f_press_ver_detalle">
+											<items>
+												<ObjectListItem title="{myParam>MOT_SOL}" tooltip="{path: 'myParam>TIP_SOL'}"  intro="Solicitante: {myParam>USR_SOL}" icon="{path: 'myParam>TIP_SOL', formatter: '.f_tipo_imagen_solicitud'}"  type="Active"
+													number="Nro. {myParam>ID_SOL}">
+													<firstStatus>
+														<ObjectStatus title="Tipo de solicitud" text="{path: 'myParam>TIP_SOL', formatter: '.f_format_tipo_solicitud'}"/>
+													</firstStatus>
+													<secondStatus>
+														<ObjectStatus title="Estado" text="{path: 'myParam>EST_SOL', formatter: '.f_format_est_sol'}"/>
+													</secondStatus>
+													<attributes>
+														<ObjectAttribute text="{path: 'myParam>FEC_SOL'}" title="Fec. Solicitud"/>
+														<!-- <ObjectAttribute text="{path: 'myParam>DESC_SOC'}" title="Sociedad"/> icon="sap-icon://sap-box"-->
+														<ObjectAttribute text="{path: 'myParam>SOCIEDAD'}" title="Sociedad"/>
+													</attributes>
+												</ObjectListItem>
+											</items>
+										</List>
+									</content>
+								</Page>  
+								<l:layoutData>
+									<l:SplitterLayoutData size="30%"/>
+								</l:layoutData>
+							</l:SplitPane>
+							<l:PaneContainer orientation="Vertical" resize=".onInnerContainerResize">
+								<l:SplitPane requiredParentWidth="700">  
+									<Page id="detail_solicitud" backgroundDesign="Solid" showNavButton="{= !${device&gt;/system/desktop} }" navButtonPress=".onPressDetailBack">
+										 <customHeader>
+										 <Bar>  
+											<contentMiddle>
+													<Title level="H3" text="Detalle de la solicitud" class="sapUiTinyMarginTopBottom"/>
+													<core:Icon src="sap-icon://business-one" ></core:Icon>
+											</contentMiddle>
+										  	<contentRight>  
+												
+
+												<Button icon="sap-icon://delete" press=".f_eliminar_solicitud" type="Transparent" text="Eliminar"/> 
+
+											</contentRight>
+										</Bar>	
+										</customHeader>
+										<content> 
+											<ObjectHeader  id="objHeaderSolicitud" binding="{path : 'myParam>/solicitud_selected_cab/0'}" responsive="true" fullScreenOptimized="false"
+												icon="{path: 'myParam>TIP_SOL', formatter: '.f_tipo_imagen_solicitud'}" title="{myParam>MOT_SOL}" number="Nro. {myParam>ID_SOL}" intro="Solicitante: {path: 'myParam>USR_CREA', formatter: '.f_format_t_nombre_usuario'}">                           
+												<attributes>
+													<ObjectAttribute text="{myParam>FEC_SOL}" title="Fec. Solicitud"/>
+													<ObjectAttribute text="{myParam>SOCIEDAD}" title="Sociedad"/>
+													<ObjectAttribute text="{path: 'myParam>TIP_SOL', formatter: '.f_format_tipo_solicitud'}" title="Tipo de Solicitud"/>
+													<ObjectAttribute text="{path: 'myParam>EST_SOL', formatter: '.f_format_est_sol'}" title="Estado"/> 
+													<ObjectAttribute id="txt_obj_calculo_monto_anticipo" text="" title="Anticipo"/>
+													<ObjectAttribute id="txt_obj_calculo_monto_liquidado" text="" title="Liquidado"/>
+												</attributes>
+											</ObjectHeader>
+											<IconTabBar id="icontab_detalle_solicitud" class="sapUiNoContentPadding">
+												<items>
+													<IconTabFilter icon="sap-icon://accounting-document-verification" key="LIQUIDACION" text="Liquidaciones" >
+														<FlexBox alignContent="End" justifyContent="End">
+															<Button icon="sap-icon://accounting-document-verification" press=".f_dialog_show('formNuevoLiquidacion', 'FormNuevoLiquidacion', 'Liquidación', 'guardar')" type="Transparent" text="Crear Nueva Liquidación"/>
+															<Button icon="sap-icon://print" text="Imprimir" enabled="true" press="onPrint" type="Transparent"/>
+														</FlexBox>
+														<Panel expandable="true" expanded="true" headerText="Liquidación de gastos ({myParam>/lista_liquidacion_cab/length})" width="auto">
+															<Table id="table_liquidacion" width="100%" mode="SingleSelectLeft"
+																items="{ path: 'myParam>/lista_liquidacion_cab' }" noDataText="Sin ninguna liquidación creada para la solicitud.">
+																<columns>
+																	<Column width="8%" hAlign="Left">   <Text text="Nro.Liq."/> </Column>
+																	<Column width="8%" hAlign="Center"> <Text text="Fec.Liq."/> </Column>
+																	<Column width="10%" hAlign="Left">   <Text text="Texto Breve"/> </Column>
+																	<Column width="8%" hAlign="Center"> <Text text="Sociedad"/> </Column>
+																	<Column width="8%" hAlign="Left">   <Text text="Aprob. N1"/> </Column>
+																	<Column width="8%" hAlign="Left">   <Text text="Aprob. N2"/> </Column> 
+																	<Column width="20%" hAlign="Center"> <Text text="Estado Liq."/> </Column>
+																	<Column width="10%" hAlign="Center"> <Text text="Estado Lib."/> </Column> 
+																	<Column width="20%" hAlign="Center"> <Text text="Acciones"/> </Column>
+																</columns>
+																<items>
+																	<ColumnListItem type="Navigation" press=".tableMethod">
+																		<cells>
+																			<Label text="{myParam>ID_LIQ}" width="100%" textAlign="Left" wrapping="true"/>
+																			<Label text="{path: 'myParam>FEC_LIQ'}" width="100%" textAlign="Left" wrapping="true"/>
+																			<Label text="{myParam>DES_LIQ}" width="100%" textAlign="Left" wrapping="true"/>
+																			<Label text="{myParam>SOCIEDAD}" width="100%" textAlign="Left" wrapping="true"/>
+																			<Label text="{myParam>USR_AP_N1}" width="100%" textAlign="Left" wrapping="true"/>
+																			<Label text="{myParam>USR_AP_N2}" width="100%" textAlign="Left" wrapping="true"/>
+																			<Label text="{path: 'myParam>EST_LIQ', formatter: '.f_format_est_liq' }" width="100%" textAlign="Left" wrapping="true"/> 
+																			<Label text="{myParam>EST_LIB}" width="100%" textAlign="Left" wrapping="true"/> 
+																			<FlexBox justifyContent="Center">
+																				<!--<Button icon="sap-icon://edit" type="Transparent" press=".f_editar_detalle"/> -->
+																				<Button icon="sap-icon://show" tooltip="Visualizar" type="Transparent" press=".f_ver_detalle"/>
+																				<Button icon="sap-icon://edit" tooltip="Editar" type="Transparent" press=".f_editar_detalle"/>
+																				<Button icon="sap-icon://delete" tooltip="Eliminar" type="Transparent" press=".f_press_tabla_eliminar_liquidacion"/>
+																				<Button icon="sap-icon://flag-2" tooltip="Guardar para verificar" type="Transparent" press=".f_press_tabla_liberar_liquidacion"/>
+																			</FlexBox>
+																		</cells>
+																	</ColumnListItem>
+																</items>
+															</Table>
+														</Panel>
+													</IconTabFilter>
+													<IconTabFilter icon="sap-icon://payment-approval" key="ANTICIPO" text="Anticipos" id="IconTabfilter_anticipo">
+														<FlexBox alignContent="End" justifyContent="End">
+															<Button icon="sap-icon://payment-approval" press=".f_dialog_show('formNuevoAnticipo', 'FormNuevoAnticipo', 'Anticipo', 'guardar').open()" type="Transparent" text="Crear Nuevo Anticipo"/>
+															<!-- <Button icon="sap-icon://delete" press=".f_eliminar_anticipo" type="Transparent" text="Eliminar Anticipo"/> -->
+														</FlexBox>
+														<Panel expandable="true" expanded="true" headerText="Anticipos ({myParam>/lista_ord_cab/length})" width="auto"> 
+																<Table id="table_anticipo" mode="None"  width="100%" items="{myParam>/lista_ord_cab}"
+																	noDataText="Sin nigún anticipo creado para la solicitud">
+																	<columns>
+																		<Column width="6%" hAlign="Center">  <Text text="Nro."/> </Column>
+																		<Column width="12%" hAlign="Left">    <Text text="Fecha"/> </Column>
+																		<Column width="9%" hAlign="Left">   <Text text="Desc."/> </Column>
+																		<Column width="6%" hAlign="Left"> 	 <Text text="Sociedad"/> </Column>
+																		<Column width="10%" hAlign="Left">    <Text text="Importe"/> </Column>
+																		<Column width="10%" hAlign="Left">    <Text text="Moneda"/> </Column>
+																		<Column width="8%" hAlign="Left">    <Text text="Ap. N1" tooltip="Aprobador N1"/> </Column>
+																		<Column width="8%" hAlign="Left">    <Text text="Ap. N2" tooltip="Aprobador N2"/> </Column>
+																		<Column width="6%" hAlign="Left">    <Text text="Obj. ERP"/> </Column>
+																		<Column width="10%" hAlign="Center"> <Text text="Estado Ord." tooltip="Estado de Anticipo"/> </Column>
+																		<Column width="7%" hAlign="Center">  <Text text="Estado Lib." tooltip="Estado de Liberación"/> </Column> 
+																		<Column width="9%" hAlign="Center"> <Text text="Acciones"/> </Column>
+																	</columns>
+																	<items>
+																		<ColumnListItem type="Navigation">
+																			<cells>
+																				<Label text="{myParam>ID_ORD}" width="100%" textAlign="Center" wrapping="true"/>
+																				<Label text="{myParam>FEC_ORD}" width="100%" textAlign="Left" wrapping="true"/>
+																				<Label text="{myParam>DES_ORD}" width="100%" textAlign="Left" wrapping="true"/>
+																				<Label text="{myParam>SOCIEDAD}" width="100%" textAlign="Left" wrapping="true"/>
+																				<Label text="{myParam>IMP_ORD}" width="100%" textAlign="Left" wrapping="true"/>
+																				<Label text="{myParam>MON_ORD}" width="100%" textAlign="Left" wrapping="true"/> 
+																				<Label text="{myParam>USR_AP_N1}" width="100%" textAlign="Left" wrapping="true"/> 
+																				<Label text="{myParam>USR_AP_N2}" width="100%" textAlign="Left" wrapping="true"/>
+																				<Label text="{myParam>ERP_OBJKEY}" width="100%" textAlign="Left" wrapping="true"/>
+																				<Label text="{path: 'myParam>EST_ORD', formatter: '.f_format_est_ord'}" width="100%" textAlign="Center" wrapping="true"/> 
+																				<Label text="{myParam>EST_LIB}" width="100%" textAlign="Center" wrapping="true"/> 
+																				<FlexBox justifyContent="Center">
+																					<Button icon="sap-icon://delete" tooltip="Eliminar" type="Transparent" press=".f_press_tabla_eliminar_anticipo"/>
+																				</FlexBox>
+																			</cells>
+																		</ColumnListItem>
+																	</items>
+																</Table> 
+														</Panel> 
+													</IconTabFilter> 
+												</items>
+											</IconTabBar> 
+										</content> 
+									</Page> 
+								</l:SplitPane>
+							</l:PaneContainer>
+						</l:PaneContainer>
+					</l:ResponsiveSplitter>  
+ 				</content> 
+			</Page>  
+		</pages>
+	</App>
+</mvc:View>

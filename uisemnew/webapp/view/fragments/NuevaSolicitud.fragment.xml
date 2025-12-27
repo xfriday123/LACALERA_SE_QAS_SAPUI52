@@ -1,0 +1,44 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <Dialog titleAlignment="Center" contentWidth= "800px" draggable= "true" resizable="false" id="NuevaSolicitudDialog" 
+    icon= "sap-icon://create-form" title="Nueva Solicitud">
+        <content>
+            <Toolbar width="100%" class="sapUiTinyMarginTop sapUiTinyMarginBottom"> 
+                <Label textAlign="Left" width="30%" design="Bold" text="Sociedad :" />
+                <Label id="txt_sociedad" width="70%" text="{myParam>/empresa_seleccionada}" />
+            </Toolbar>
+
+            <Toolbar width="100%" class="sapUiTinyMarginTop sapUiTinyMarginBottom"> 
+                <Label textAlign="Left" width="30%" design="Bold" text="Tipo de solicitud :"/>
+                <Select id="cmb_tipo_solicitud" width="70%" change="f_change_tipo_solicitud" liveChange="true"> 
+                    <core:Item key="REE" text="REE - Reembolso" />
+                    <core:Item key="ERE" text="ERE - Entregas a rendir" />
+                    <core:Item key="CCH" text="CCH - Caja Chica" />
+                </Select>
+            </Toolbar>
+            
+            <Toolbar width="100%" class="sapUiTinyMarginTop sapUiTinyMarginBottom"> 
+                <Label textAlign="Left" width="30%" design="Bold" text="Fecha de solicitud :"/>
+                <DatePicker id="txt_fecha_solicitud" width="70%" valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy" editable="true" value="{viewModel>/fechaSolicitud}" />
+            </Toolbar>
+            
+           
+            <Toolbar width="100%" class="sapUiTinyMarginTop sapUiTinyMarginBottom"> 
+                <Label textAlign="Left" width="30%" design="Bold" text="Texto Cabecera :"/>
+                <Input id="txt_motivo" width="70%" placeholder="Detalle breve de requerimiento(25)"/> 
+            </Toolbar>
+
+
+            <!-- Campos customizados de solicitud -->
+            <Toolbar width="100%" class="sapUiTinyMarginTop sapUiTinyMarginBottom" id="tool_txt_sol_field1" visible="{myParam>/sol_field1/ind_active_visible}"> 
+                <Label textAlign="Left" width="30%" design="Bold" text="{myParam>/sol_field1/descripcion}"/>
+                <Input id="txt_sol_field1" value="" width="70%" editable="true" maxLength="50" placeholder="completar si corresponde a transportes - choferes"/> 
+            </Toolbar> 
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Button id="btnNuevaSolicitud" text="Guardar" press="f_guardar('NuevaSolicitudDialog', 'NuevaSolicitud', 'crear')"/>
+                <Button text="Cancelar" press="f_cancelar('NuevaSolicitudDialog', 'NuevaSolicitud')"/>
+            </Toolbar>
+
+        </content>
+    </Dialog>
+</core:FragmentDefinition>

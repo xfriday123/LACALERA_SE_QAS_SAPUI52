@@ -1,0 +1,53 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+     
+    xmlns:layout="sap.ui.layout.form">
+    <Dialog id="dialogCrearUsuario" title="Crear Usuario" draggable="true" contentWidth= "800px" resizable="false">
+        <content>
+            <layout:SimpleForm
+                editable="true"
+                layout="ResponsiveGridLayout"
+                singleContainerFullSize="false">
+
+                <Label text="Login web"/>
+                <Input id="idLogin" value="{usuarioModel>/ID_USR}" placeholder="Ingrese login web (30) ..." required="true"/>
+
+                <Label text="Sociedad"/>
+                <Input id="idUsuario" value="{usuarioModel>/SOCIEDAD}" placeholder="Ingrese sociedad (30) ..." required="true"/> 
+
+                <Label text="G. Liberacion"/>
+                <Input  value="{usuarioModel>/GPO_LIB}" placeholder="Ingrese g. liberacion (30) ..." required="true"/> 
+                
+                <Label text="G. aut"/>
+                <Input  value="{usuarioModel>/GPO_AUT}" placeholder="Ingrese g. aut (30) ..." required="true"/> 
+
+                <Label text="Nombre usuario"/>
+                <Input  value="{usuarioModel>/USERNAME}" placeholder="Ingrese nombre de usuario (30) ..." required="true"/> 
+
+                <!--<Label text="Nombre Usu."/>
+                <Input id="idNomUsu" value="{usuarioModel>/USR_NOMBRE}" placeholder="Ingrese Nombre de usuario (30) ..." required="true"/> 
+
+                <Label text="SOCIEDAD"/>
+                <Input id="idsociedad" value="{usuarioModel>/SOCIEDAD}" placeholder="Ingrese la sociedad (30) ..." required="true"/> 
+                
+                <Label text="Estado"/>
+                <CheckBox selected="{myParam>ESTADO}" editable="false"/> -->
+ <!--
+                <Label text="Bandeja de solicitudes :"/>
+                <Button text="Restringir" id="idOcultar" type="Emphasized" icon="sap-icon://locked" press="onPressCreaUsuario"/>
+                <Button text="Dar Acceso" id="idMostrar" type="Emphasized" icon="sap-icon://unlocked" press="onPressCreaUsuario"/>
+  
+                <Label text="Bandeja de anticipo :"/>
+                <Button text="Restringir" id="idOcultar" type="Emphasized" icon="sap-icon://locked" press="onPressCreaUsuario"/>
+                <Button text="Dar Acceso" id="idMostrar" type="Emphasized" icon="sap-icon://unlocked" press="onPressCreaUsuario"/> -->
+  
+            </layout:SimpleForm>
+        </content>
+        <beginButton>
+            <Button text="Guardar" type="Transparent" press="onFormUsuario"/>
+        </beginButton>
+        <endButton>
+            <Button text="Cancelar" press="onCancelar('dialogCrearUsuario')"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

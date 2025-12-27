@@ -1,0 +1,20 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout.form">
+    <Dialog id="dialogCrearConceptoGasto" title="Crear Concepto de Gasto" draggable="true" resizable="false">
+        <content>
+            <layout:SimpleForm editable="true" layout="ResponsiveGridLayout">
+                <Label text="ID CONCEPTO"/>
+                <Input value="{conceptoGastoModel>/ID_CONCEPTO}" required="true"/>
+                <Label text="Descripción"/>
+                <Input value="{conceptoGastoModel>/DES_CONCEPTO}" required="true"/>
+            </layout:SimpleForm>
+        </content>
+        <beginButton>
+            <Button text="Guardar" type="Transparent" press="onGuardarConceptoGasto"/>
+        </beginButton>
+        <endButton>
+            <Button text="Cancelar" press="onCancelar('dialogCrearConceptoGasto')"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

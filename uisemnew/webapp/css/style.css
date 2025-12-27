@@ -1,0 +1,16 @@
+.sapMImgFocusable:focus {
+    outline: .125rem solid #0032a500 !important;
+    outline-offset: 0rem;
+    border-radius: 0.5rem; 
+}
+
+.page_background_img_principal {
+    background-image: url("../img/fondo_rebranding1_smartexpenses.jpeg");
+    background-size: 100% 100%;
+    opacity: 90%;
+}
+
+.white {
+    color: #fefefe;
+}
+

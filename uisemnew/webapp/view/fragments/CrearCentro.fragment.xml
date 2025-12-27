@@ -1,0 +1,20 @@
+    <core:FragmentDefinition xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns:layout="sap.ui.layout.form">
+        <Dialog id="dialogCrearCentro" title="Crear Centro Costo" draggable="true" resizable="false">
+            <content>
+                <layout:SimpleForm editable="true" layout="ResponsiveGridLayout"> 
+                    <Label text="ID CENTRO COSTO"/>
+                    <Input value="{centroModel>/OBJ_CO}" required="true"/>
+                    <Label text="Descripción"/>
+                    <Input value="{centroModel>/DESC_OBJ_CO}" required="true"/>
+                </layout:SimpleForm>
+            </content>
+            <beginButton>
+                <Button text="Guardar" type="Transparent" press="onFormCentro"/>
+            </beginButton>
+            <endButton>
+                <Button text="Cancelar" press="onCancelar('dialogCrearCentro')"/>
+            </endButton>
+        </Dialog>
+    </core:FragmentDefinition>

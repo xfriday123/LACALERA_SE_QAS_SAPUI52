@@ -1,0 +1,35 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+     
+    xmlns:layout="sap.ui.layout.form">
+    <Dialog id="dialogCrearGrupoLiberacion" title="Crear Grupo Liberacion" draggable="true" contentWidth= "800px" resizable="false">
+        <content>
+            <layout:SimpleForm
+                editable="true"
+                layout="ResponsiveGridLayout"
+                singleContainerFullSize="false">
+
+                <Label text="Sociedad"/>
+                <Input value="{grupoLiberacionModel>/SOCIEDAD}" placeholder="Ingrese Sociedad (30) ..." required="true"/>
+
+                <Label text="Grupo Liberacion"/>
+                <Input value="{grupoLiberacionModel>/GPO_LIB}" placeholder="Ingrese grupo liberacion (30) ..." required="true"/> 
+                
+                <Label text="Tipo"/>
+                <Input value="{grupoLiberacionModel>/TIPO}" placeholder="Ingrese el tipo (30) ..." required="true"/> 
+                
+                <Label text="Aprobador 1"/>
+                <Input value="{grupoLiberacionModel>/USR_AP_N1}" placeholder="Ingrese aprobador 1 (30) ..." required="true"/> 
+                
+                <Label text="Aprobador 2"/>
+                <Input value="{grupoLiberacionModel>/USR_AP_N2}" placeholder="Ingrese aprobador 2 (30) ..." required="true"/> 
+            </layout:SimpleForm>
+        </content>
+        <beginButton>
+            <Button text="Guardar" type="Transparent" press="onFormGrupoLiberacion"/>
+        </beginButton>
+        <endButton>
+            <Button text="Cancelar" press="onCancelar('dialogCrearGrupoLiberacion')"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

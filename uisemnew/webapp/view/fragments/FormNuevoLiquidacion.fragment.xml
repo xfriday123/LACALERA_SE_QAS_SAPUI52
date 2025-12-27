@@ -1,0 +1,202 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:scan="sap.ndc" xmlns:core="sap.ui.core">
+    <Dialog titleAlignment="Center" contentWidth= "950px" draggable= "true" resizable="false" id="formNuevoLiquidacion"  xmlns:u="sap.ui.unified"
+    icon= "sap-icon://create-form" title="Ingresar liquidacion">
+        <content>
+            <VBox id="vbox_registro_liquidacion" visible="true" class="sapUiNoContentPadding">
+                <VBox class="sapUiContentPadding">
+                    <Toolbar width="100%" visible="false" >
+                        <Label text="id Liquidación : " textAlign="End" width="40%" design="Bold"></Label>
+                        <Input id="txt_id_liquidacion" width="60%"/> 
+                        <ToolbarSpacer></ToolbarSpacer>
+                    </Toolbar>
+                    <Toolbar width="100%" >
+                        <Label text="Fecha Liquidación : " textAlign="End" width="40%" design="Bold"></Label>
+                        <DatePicker id="txt_fecha_liquidacion" valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy" width="60%"/> 
+                        <ToolbarSpacer></ToolbarSpacer>
+                    </Toolbar>
+                    <Toolbar width="100%" > 
+                        <Label text="Descripción Liquidación : " textAlign="End" width="40%" design="Bold"></Label> 
+                        <Input id="txt_descripcion_liquidacion" value=""   width="60%" placeholder="(obligatorio) Describa detalle de requerimiento (50)"/> 
+                        <Input id="id_liquidacion" value="" width="60%" visible="false" /> 
+
+                        <ToolbarSpacer></ToolbarSpacer> 
+                    </Toolbar>
+                </VBox> 
+
+
+                <Panel headerText="Detalle de gasto" expandable="true" expanded="true">
+                    <FlexBox justifyContent="SpaceBetween" >
+                        <FlexBox alignContent="Center" alignItems="Center" class="sapUiSmallMarginBegin sapUiSmallMarginEnd">
+                            <Label text="" class="sapUiTinyMarginEnd"></Label>
+                        </FlexBox>  
+                        <FlexBox> 
+                            <FlexBox alignContent="Center" alignItems="Center" class="sapUiSmallMarginBegin sapUiSmallMarginEnd">
+                                <Label text="Escanear QR:" class="sapUiTinyMarginEnd"></Label>
+                                <scan:BarcodeScannerButton tooltip="Escanear QR" scanSuccess="onScanQRCode"/>
+                            </FlexBox>  
+                            <FlexBox alignContent="Center" alignItems="Center" class="sapUiSmallMarginBegin sapUiSmallMarginEnd">          
+                                <Label text="Escanear IA:" class="sapUiTinyMarginEnd"></Label>
+                                <Button tooltip="Escanear IA" icon="sap-icon://search" press="f_capturar_pic_imagen"/>
+                                <!--<Button icon="sap-icon://camera" type="Attention" text="Take a pic!" class="sapUiLargeMarginBegin" press="f_capturar_pic_imagen"/> -->
+                                <VBox id="vBox1"></VBox>
+                            </FlexBox>
+                        </FlexBox> 
+                    </FlexBox>
+                    <VBox class="sapUiContentPadding">
+                        <Toolbar width="100%" >
+                            <Label text="Concepto gasto : " textAlign="End" width="40%" design="Bold"></Label> 
+                            <Select id="cmb_concepto_gasto" items="{myParam>/T_CONCEPTO}" width="60%" change="f_change_concepto_gasto">
+                                <core:ListItem key="{myParam>ID_CONCEPTO}" text="{myParam>ID_CONCEPTO} - {myParam>DES_CONCEPTO}"/> 
+                            </Select> 
+                            <ToolbarSpacer></ToolbarSpacer>
+                        </Toolbar>	
+                        <Toolbar width="100%">
+                            <Label text="Descripción gasto : " textAlign="End" width="40%" design="Bold"></Label>
+                            <Input id="txt_descripcion_gasto" placeholder="Detallar el gasto realizado (50)" width="60%" editable="true"/> 
+                            <ToolbarSpacer></ToolbarSpacer>
+                        </Toolbar> 	 
+                        <Toolbar width="100%"> 
+                            <Label text="Fecha de Documento : " textAlign="End" width="40%" design="Bold"></Label>
+                            <DatePicker id="txt_fecha_gasto" valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy" width="60%" placeholder="Por ejemplo: dd/mm/yyyy"/>
+                            <ToolbarSpacer></ToolbarSpacer>
+                        </Toolbar>
+                        <Toolbar width="100%" > 
+                            <Label text="RUC / NIF : " textAlign="End" width="40%" design="Bold"></Label> 
+                            <Input id="txt_ruc_nif_proveedor" value="" valueLiveUpdate="true" change="f_change_ruc_liveupdate_form_liquidacion" width="60%"/> 
+                            <ToolbarSpacer></ToolbarSpacer> 
+                        </Toolbar>
+                        <Toolbar width="100%" > 
+                            <Label text="Razón Social : " textAlign="End" width="40%" design="Bold"></Label> 
+                            <Input id="txt_razon_social" value=""  width="60%"/> 
+                            <ToolbarSpacer></ToolbarSpacer> 
+                        </Toolbar>
+                        <Toolbar width="100%" >
+                            <Label text="Tipo Comprobante : " textAlign="End" width="40%" design="Bold"></Label>
+                            <Select id="cmb_tipo_comprobante" items="{myParam>/T_TIP_COMP}" width="60%" selectedKey=""  > 
+                                <core:ListItem key="{myParam>TIP_COMP}" text="{myParam>TIP_COMP} - {myParam>DESC_COMP}"/>
+                            </Select>
+                            <ToolbarSpacer></ToolbarSpacer>
+                        </Toolbar> 
+                        
+                        <Toolbar width="100%" >
+                            <Label text="Nro Comprobante : " textAlign="End" width="40%" design="Bold"></Label>
+                            <Input id="txt_nro_comprobante"  width="60%"  editable="true" placeholder="CCCC-NNNNNNNN"/> 
+                            <ToolbarSpacer></ToolbarSpacer>
+                        </Toolbar> 	 
+                        <Toolbar width="100%" >
+                            <Label text="Importe Total : " textAlign="End" width="40%" design="Bold"></Label>
+                            <Input id="txt_monto_gasto" type="Number" width="60%" editable="true" liveChange="f_live_change_monto_gasto_form_liquidacion"/>
+                            <ToolbarSpacer></ToolbarSpacer>
+                        </Toolbar>
+                        <Toolbar width="100%">
+                            <Label text="Moneda Gasto : " textAlign="End" width="40%" design="Bold"></Label>
+                            <Select id="cmb_moneda_gasto" width="60%" selectedKey="PEN"> 
+                                <core:Item key="PEN" text="PEN - Soles" />
+                                <core:Item key="USD" text="USD - Dólares" />
+                            </Select>
+                            <ToolbarSpacer></ToolbarSpacer>
+                        </Toolbar>
+                        <Toolbar width="100%">
+                            <Label text="Imp. Otros cargos :" textAlign="End" width="40%" design="Bold"></Label>
+                            <CheckBox id="idompotroscheck" selected="false" width="20%" valueState="Information" select="evtCheckOI"/>
+                            <Input id="idompotros" enabled="false" value=""  width="40%"/> 
+                            <ToolbarSpacer></ToolbarSpacer>
+                        </Toolbar>                        
+                        <Toolbar width="100%" >
+                            <Label text="Ind. IGV: " textAlign="End" width="40%" design="Bold"></Label>
+                            <Select id="cmb_iva" width="60%" selectedKey=""> 
+                                <core:Item key="" text="- Seleccionar" />
+                                <core:Item key="C0" text="0% IGV - Compras no gravadas" />
+                                <core:Item key="C1" text="18% IGV - Compras gravadas" />
+                                <core:Item key="C2" text="18% IGV - Compras no deducibles" />
+                                <core:Item key="C8" text="10% IGV - Compras gravadas" />
+                            </Select>
+                            <ToolbarSpacer></ToolbarSpacer>
+                        </Toolbar>
+                        <Toolbar width="100%">
+                            <Label text="CECO : " textAlign="End" width="40%" design="Bold"></Label>
+<!--                             <Select id="cmb_ceco" items="{ path: 'myParam>/T_OBJ_CO', length:3500 }" width="60%" selectedKey="">
+                                <core:ListItem key="{myParam>OBJ_CO}" text="{myParam>OBJ_CO} - {myParam>DESC_OBJ_CO}"/>
+                            </Select> -->
+
+                            <ComboBox id="cmb_ceco" editable="true" items="{ path: 'myParam>/T_OBJ_CO'}" 
+                                placeholder="- Seleccione ceco" required="true" width="60%">
+                                <core:Item key="{myParam>OBJ_CO}" text="{myParam>OBJ_CO} - {myParam>DESC_OBJ_CO}"/>
+                            </ComboBox>                            
+                            <ToolbarSpacer></ToolbarSpacer>
+                        </Toolbar>
+                        <Toolbar width="100%" >
+                            <Label text="Documento : " textAlign="End" width="40%" design="Bold"></Label>
+                            <u:FileUploader placeholder="(obligatorio) Adjuntar sustento de gasto" id="file_input_documento" width="60%" name="file_input_documento" buttonText="clic en navegar, y adjuntar documento" tooltip="Subir fichero" change="onFileUploaderChange"/>
+                            <ToolbarSpacer></ToolbarSpacer>
+                        </Toolbar>
+                        <!--
+                        <FlexBox justifyContent="End" class="sapUiSmallMarginTop" >
+                            <Button icon="sap-icon://add" id="agregarItemDetalle" text="Añadir detalle a lista de gastos" type="Transparent" press="f_reg_nuevo_detalle_liquidacion_tabla()"/>
+                        </FlexBox>
+                        -->    
+                    </VBox>
+                </Panel>
+
+            </VBox>
+
+            <VBox>
+                <Table headerText="Lista detallada de gastos" id="table_detalle_nuevo_liquidacion"   width="100%" items="{ path: 'myParam>/detalleLiquidacion' }"
+                    noDataText="Sin ningún detalle de gastos">
+                    <columns>
+                        <Column width="15%" hAlign="Center"> <Text text="Concepto"/> </Column>
+                        <Column width="15%" hAlign="Center"> <Text text="Desc Gasto"/> </Column>
+                        <Column width="10%" hAlign="Center"> <Text text="RUC/NIF"/> </Column>  
+                        <Column width="10%" hAlign="Center"> <Text text="Nro Comp"/> </Column>  
+                        <Column width="10%" hAlign="Center"> <Text text="Fec.Gasto."/> </Column>
+                        <Column width="15%" hAlign="Center"> <Text text="Importe"/> </Column>
+                        <Column width="15%" hAlign="Left">   <Text text="Moneda"/> </Column>
+                        <Column width="12%" hAlign="Center"> <Text text="Estado Gasto"/> </Column> 
+                        <Column width="12%" hAlign="Center"> <Text text="ERP OBJTYPE"/> </Column> 
+                        
+                        <Column width="15%" hAlign="Center"> <Text text="Acciones"/> </Column> <!-- MM-20250804-AJ -->
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Label text="{ path: 'myParam>ID_CONCEPTO', formatter: '.f_format_t_concepto'}" width="100%" textAlign="Left" wrapping="true"/>  
+                                
+                                <Label text="{myParam>DESC_GTO}" width="100%" textAlign="Left" wrapping="true"/>  
+                                <Label text="{myParam>NIF_PROV}" width="100%" textAlign="Left" wrapping="true"/>  
+                                <Label text="{myParam>NRO_COMP}" width="100%" textAlign="Left" wrapping="true"/>  
+                                <!-- <Label text="{path: 'myParam>FEC_GTO', formatter: 'f_format_x_fecha'}" width="100%" textAlign="Left" wrapping="true"/> -->
+                                <Label text="{myParam>FEC_GTO}" width="100%" textAlign="Left" wrapping="true"/>
+                                <Label text="{myParam>IMP_GTO}" width="100%" textAlign="Left" wrapping="true"/>
+                                <Label text="{myParam>MON_GTO}" width="100%" textAlign="Left" wrapping="true"/>
+                                <Text text="{path: 'myParam>EST_GTO', formatter: 'f_format_est_gto'}" /> 
+                                <Label text="{myParam>ERP_OBJTYPE}" width="100%" textAlign="Left" wrapping="true"/>
+
+                                <FlexBox justifyContent="Start"> 
+                                    <Button icon="sap-icon://delete" press="f_eliminar_detalle_liquidacion" type="Transparent"/> 
+                                    <Button icon="sap-icon://edit" press="f_editar_detalle_liquidacion" type="Transparent"/> 
+                                    <Button icon="sap-icon://download" press="f_descargar_base64" visible="{myParam>visible_ADJ}" type="Transparent"/>
+                                    <!-- <Button icon="sap-icon://download" press="f_descargar_base64" type="Transparent"/> --> <!-- MM-20250804-AJ -->
+                                </FlexBox>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table> 
+                <!--
+                <Toolbar>
+                    <Button text="Guardado preliminar" id="btn_guardar_detalle" icon="sap-icon://save" type="Transparent" press="f_guardar('formNuevoLiquidacion', 'FormNuevoLiquidacion', 'guardar_detalle_liquidacion')"/>
+                    <Button text="Cancelar" icon="sap-icon://cancel" type="Transparent" press="f_cancelar('formNuevoLiquidacion', 'FormNuevoLiquidacion')"/>
+                </Toolbar>
+                -->  
+            </VBox> 
+        </content>
+        <footer>
+            <!-- Este pie de página se verá siempre visible -->
+            <Toolbar>
+                <ToolbarSpacer />
+                <Button id="btn_agregar_item_detalle" text="Añadir detalle a lista de gastos" icon="sap-icon://add" type="Transparent" press="f_reg_nuevo_detalle_liquidacion_tabla()"/>
+                <Button id="btn_guardar_detalle" text="Guardado preliminar" icon="sap-icon://save" type="Transparent" press="f_guardar('formNuevoLiquidacion', 'FormNuevoLiquidacion', 'guardar_detalle_liquidacion')"/>
+                <Button text="Cancelar" icon="sap-icon://cancel" type="Transparent" press="f_cancelar('formNuevoLiquidacion', 'FormNuevoLiquidacion')"/>
+            </Toolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

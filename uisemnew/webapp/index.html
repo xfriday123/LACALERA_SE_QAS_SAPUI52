@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Smart Expenses</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    <style>
+        html, body, body > div, #container, #container-uiarea {
+            height: 100%;
+        }
+    </style>
+     
+    <script
+        id="sap-ui-bootstrap"
+        src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js"
+        data-sap-ui-theme="sap_horizon"
+        data-sap-ui-theme-roots='{"horizon_expenses" : "UI5/"}'
+        data-sap-ui-resourceroots='{
+            "nsnew.uisemnew": "./"
+        }'
+        data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
+        data-sap-ui-compatVersion="edge"
+        data-sap-ui-async="true"
+        data-sap-ui-frameOptions="trusted"
+    ></script> 
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+
+</head>
+<body class="sapUiBody sapUiSizeCompact" id="content">
+    <div
+        data-sap-ui-component
+        data-name="nsnew.uisemnew"
+        data-id="container"
+        data-settings='{"id" : "nsnew.uisemnew"}'
+        data-handle-validation="true"
+    ></div>
+</body>
+</html>

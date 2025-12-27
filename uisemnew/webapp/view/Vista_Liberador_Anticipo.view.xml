@@ -1,0 +1,126 @@
+<mvc:View   
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns="sap.m"
+	xmlns:me="sap.me" 
+	displayBlock="true"	 
+	xmlns:u="sap.ui.unified" 
+	xmlns:tab="sap.ui.table" 
+	xmlns:l="sap.ui.layout" 
+	xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" 
+	xmlns:f="sap.ui.layout.form"
+	controllerName="nsnew.uisemnew.controller.Vista_Liberador_Anticipo" 
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<App> 
+		<pages>
+			<Page class="page_background_img" showHeader="false">
+				<content>   
+					<l:ResponsiveSplitter defaultPane="default">
+						<l:PaneContainer resize=".onRootContainerResize">
+							<l:SplitPane requiredParentWidth="300" id="default1"> 
+								<Page backgroundDesign="List">
+									<customHeader>
+										<Bar>
+											<contentMiddle>
+												<Button class="sapUiTinyMargin" icon="sap-icon://navigation-left-arrow" press="pressVolver" type="Transparent" tooltip="Volver"/>
+												<Title text="Tabla de solicitudes ({ path: 'myParam>/listaSolicitudes_distinct/length'})" titleStyle="H5" />
+											</contentMiddle>
+											<contentLeft> </contentLeft>
+											<contentRight> </contentRight>
+										</Bar>
+									</customHeader>
+									<content>
+										<SearchField liveChange="onSearch" width="100%" placeholder="Buscar Nro Solicitud"/>
+										<List id="idTablaLiberadorAnticipo" itemPress="onItemPress" 
+											 items="{path: 'myParam>/listaSolicitudes_distinct', sorter: {path: 'FEC_CREA', descending: true}}"  mode="SingleSelectMaster" sticky="HeaderToolbar">
+											<headerToolbar> 
+											</headerToolbar>
+											<items>
+												<ObjectListItem  title="{myParam>MOT_SOL}"  intro="Solicitante: {myParam>USR_SOL}" icon="sap-icon://ounting-document-verification" 
+													type="Active" number="Nro Sol: {myParam>ID_SOL}">
+													<firstStatus>
+														<ObjectStatus title="Tipo de solicitud" text="{path: 'myParam>TIP_SOL', formatter: '.f_format_tipo_solicitud'}"/>
+													</firstStatus>
+													<secondStatus>
+														<ObjectStatus title="Estado" text="{path: 'myParam>EST_SOL', formatter: '.f_format_est_sol'}"/>
+													</secondStatus>
+													<attributes>
+														<ObjectAttribute text="{path: 'myParam>FEC_SOL'}" title="Fec. Solicitud"/>
+														<ObjectAttribute text="{myParam>SOCIEDAD}" title="Sociedad"/>
+													</attributes>
+												</ObjectListItem>
+											</items>
+										</List>
+									</content>
+								</Page>  
+									<l:layoutData>
+									<l:SplitterLayoutData size="35%"/>
+								</l:layoutData>
+							</l:SplitPane>
+							<l:PaneContainer orientation="Vertical" resize=".onInnerContainerResize">
+								<l:SplitPane requiredParentWidth="700">  
+									<Page id="detail1" backgroundDesign="Solid" showNavButton="{= !${device&gt;/system/desktop} }" navButtonPress=".onPressDetailBack">
+										<customHeader>
+											<Bar>
+												<contentMiddle>
+													<Title level="H3" text="Datos de Anticipo"/>
+												</contentMiddle>
+												<contentRight>  
+														<!-- <Button icon="sap-icon://search" type="Transparent" text="Ver Solicitud" press="f_ver_Anticipo()"/> -->
+														<Button icon="sap-icon://paid-leave" press=".f_liberar_anticipo" type="Transparent" text="Liberar"/>
+														<Button icon="sap-icon://unpaid-leave" press=".f_eliminar_anticipo" type="Transparent" text="Rechazar"/>
+														<!-- <Button type="Transparent" text="Reporte Excel"  id="idExcel32" press="onPressExcel" icon="sap-icon://excel-attachment"/> -->
+												</contentRight>
+											</Bar> 
+										</customHeader>
+										<content>
+											<ObjectHeader id="objectAnticipo" binding="{path : 'myParam&gt;/list_consulta_aprobacion_cab'}" 
+												responsive="true" fullScreenOptimized="false" icon="sap-icon://account" 
+												title="Nro Solicitud: {myParam>ID_SOL}" backgroundDesign="Solid" titleActive="false" titlePress="handleTitlePress">
+												<attributes>
+													<ObjectAttribute id="obj_nro_solicitud" title="Numero Solicitud" /> 
+													<ObjectAttribute id="obj_fecha_solicitud" title="Fecha Solicitud" /> 
+													<ObjectAttribute id="obj_solicitante" title="Solicitante" /> 
+													<ObjectAttribute id="obj_sociedad" title="Sociedad" /> 
+													<ObjectAttribute id="obj_tipo_solicitud" title="Tipo Solicitud" /> 
+													<ObjectAttribute id="obj_estado_solicitud" title="Estado" /> 
+												</attributes> 
+											</ObjectHeader>
+												<Table id="idAnticipoesTable" items="{path: 'myParam>/listaAnticipos'}" mode="SingleSelectLeft">
+													<columns>
+														<Column width="10%"> <Text text="Nro Anticipo" /> </Column>
+														<Column width="15%"> <Text text="Descripción" />  </Column>
+														<Column width="13%"> <Text text="Fecha" /> </Column>
+														<Column width="12%"> <Text text="Importe" /> </Column>
+														<Column width="10%"> <Text text="Moneda" /> </Column>
+														<Column width="10%"> <Text text="Soc" tooltip="Sociedad" /> </Column>
+														<Column width="10%"> <Text text="Est lib" tooltip="Estado liberación" /> </Column>
+														<Column width="20%"> <Text text="Est Anticipo" tooltip="Estado Anticipo" /> </Column>
+													</columns>
+													<items>
+														<ColumnListItem>
+															<cells>
+																<ObjectIdentifier title="{myParam>ID_ORD}" />
+																<Text text="{myParam>DES_ORD}" />
+																<Text text="{myParam>FEC_ORD}" />
+																<Text text="{myParam>IMP_ORD}" />
+																<Text text="{myParam>MON_ORD}" /> 
+																<Text text="{myParam>SOCIEDAD}" />
+																<Text text="{myParam>EST_LIB}" />
+																<Text text="{path: 'myParam>EST_ORD', formatter: '.f_format_est_ord'}" /> 
+															</cells>
+														</ColumnListItem>
+													</items>
+												</Table>
+											
+										</content>
+									</Page> 
+								</l:SplitPane>
+							</l:PaneContainer>
+						</l:PaneContainer>
+					</l:ResponsiveSplitter>  
+ 				</content> 
+			</Page>  
+		</pages>
+	</App>
+</mvc:View>

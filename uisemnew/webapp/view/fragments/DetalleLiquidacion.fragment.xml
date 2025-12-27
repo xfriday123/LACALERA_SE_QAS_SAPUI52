@@ -1,0 +1,57 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:tab="sap.ui.table">
+    <Dialog titleAlignment="Center" contentWidth="100%" draggable="true" resizable="false" id="DetalleLiquidacion" 
+        icon="sap-icon://create-form" title="Detalle liquidacion gastos Nº {myParam>ID_LIQ}">
+        <content>
+            <VBox class="sapUiContentPadding">
+                <!-- Tabla para mostrar los detalles de la liquidación -->
+                <Table headerText="Lista detallada de gastos" id="table_detalle_liquidacion" width="100%" items="{ path: 'myParam>/listaDetalleLiquidacion' }"
+                    noDataText="Sin ningún detalle de gastos">
+                    <columns>
+                        <Column width="4%" hAlign="Center"> <Text text="Nro LIQ" tooltip="Número Liquidación"/> </Column>
+                        <Column width="4%" hAlign="Center"> <Text text="Pos LIQ" tooltip="Posición Liquidación"/> </Column>
+                        <Column width="7%" hAlign="Center"> <Text text="Concepto"/> </Column>  
+                        <Column width="10%" hAlign="Center"> <Text text="Descripción Gasto"/> </Column>  
+                        <Column width="10%" hAlign="Center"> <Text text="NIF PROV"/> </Column>
+                        <Column width="8%" hAlign="Center"> <Text text="Tipo Comprobante"/> </Column>
+                        <Column width="8%" hAlign="Center"> <Text text="Nro Comprobante"/> </Column>
+                        <Column width="7%" hAlign="Center"> <Text text="Fecha Gasto"/> </Column>
+                        <Column width="7%" hAlign="Center"> <Text text="Importe"/> </Column>
+                        <Column width="7%" hAlign="Center"> <Text text="Moneda Gasto"/> </Column>
+                        <Column width="11%" hAlign="Center"> <Text text="CECO" tooltip="Centro de Costo"/> </Column> 
+                        <Column width="7%" hAlign="Center"> <Text text="Estado Gasto"/> </Column> 
+                        <Column width="11%" hAlign="Center"> <Text text="Fecha Creación"/> </Column>
+                        <Column width="5%" hAlign="Left"> <Text text="Acciones"/> </Column> 
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text wrapping="true" text="{myParam>ID_LIQ}" />  
+                                <Text text="{myParam>POS_LIQ}" />
+                                <Text text="{path: 'myParam>ID_CONCEPTO', formatter: 'f_format_t_concepto'}" />
+                                <Text text="{myParam>DESC_GTO}" />
+                                <Text text="{myParam>NIF_PROV}" />
+                                <Text text="{path: 'myParam>TIP_COMP', formatter: 'f_format_t_tip_comp'}" />
+                                <Text text="{myParam>NRO_COMP}" />
+                                <Text text="{myParam>FEC_GTO}" />
+                                <Text text="{myParam>IMP_GTO}" />
+                                <Text text="{myParam>MON_GTO}" /> 
+                                <Text text="{myParam>OBJ_CO}" /> 
+                                <Text text="{path: 'myParam>EST_GTO', formatter: 'f_format_est_gto'}" /> 
+                                <Text text="{myParam>FEC_CREA}" />
+                                <FlexBox justifyContent="Start"> 
+                                    <Button icon="sap-icon://download" press="f_descargar_base64" visible="{myParam>visible_ADJ}" type="Transparent"/> 
+                                </FlexBox> 
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table> 
+
+                <!-- Botón para cerrar el diálogo -->
+                <Toolbar width="100%" height="45px">
+                    <ToolbarSpacer/>                       
+                    <Button text="Cerrar" press="f_cancelar('detalleLiquidacion', 'DetalleLiquidacion')"/>
+                </Toolbar>
+            </VBox>
+        </content>
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,129 @@
+<mvc:View   
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns="sap.m"
+	xmlns:me="sap.me" 
+	displayBlock="true"	 
+	xmlns:u="sap.ui.unified" 
+	xmlns:tab="sap.ui.table" 
+	xmlns:l="sap.ui.layout" 
+	xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" 
+	xmlns:f="sap.ui.layout.form"
+	controllerName="nsnew.uisemnew.controller.Vista_Liberador_Liquidacion" 
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<App> 
+		<pages>
+			<Page class="page_background_img" showHeader="false">
+				<content>   
+					<l:ResponsiveSplitter defaultPane="default">
+						<l:PaneContainer resize=".onRootContainerResize">
+							<l:SplitPane requiredParentWidth="300"> 
+								<Page backgroundDesign="List">
+									<customHeader>
+										<Bar>
+											<contentMiddle>
+												<Button class="sapUiTinyMargin" icon="sap-icon://navigation-left-arrow" press="pressVolver" type="Transparent" tooltip="Volver"/>
+												<Title text="Tabla de solicitudes ({ path: 'myParam>/listaSolicitudes_distinct/length'})" titleStyle="H5" />
+											</contentMiddle>
+											<contentLeft> </contentLeft>
+											<contentRight> </contentRight>
+										</Bar>
+									</customHeader>
+									<content>
+										<SearchField liveChange="onSearch" width="100%" placeholder="Buscar Nro Solicitud"/>
+										<List id="tabla_liberacion_liquidacion" itemPress="onItemPress" 
+											items="{path: 'myParam>/listaSolicitudes_distinct', sorter: {path: 'FEC_CREA', descending: true}}"  mode="SingleSelectMaster"  sticky="HeaderToolbar">
+											<headerToolbar>
+											</headerToolbar>
+											<items>
+												<ObjectListItem  title="{myParam>MOT_SOL}"  intro="Solicitante: {myParam>USR_SOL}" icon="sap-icon://accounting-document-verification" 
+													type="Active" number="Nro Sol: {myParam>ID_SOL}">
+													<firstStatus>
+														<ObjectStatus title="Tipo de solicitud" text="{path: 'myParam>TIP_SOL', formatter: '.f_format_tipo_solicitud'}"/>
+													</firstStatus>
+													<secondStatus>
+														<ObjectStatus title="Estado" text="{path: 'myParam>EST_SOL', formatter: '.f_format_est_sol'}"/>
+													</secondStatus>
+													<attributes>
+														<ObjectAttribute text="{path: 'myParam>FEC_SOL'}" title="Fec. Solicitud"/>
+														<ObjectAttribute text="{myParam>SOCIEDAD}" title="Sociedad"/>
+													</attributes>
+												</ObjectListItem>
+											</items>
+										</List>
+									</content>
+								</Page>  
+									<l:layoutData>
+									<l:SplitterLayoutData size="35%"/>
+								</l:layoutData>
+							</l:SplitPane>
+							<l:PaneContainer orientation="Vertical" resize=".onInnerContainerResize">
+								<l:SplitPane requiredParentWidth="700">  
+									<Page backgroundDesign="Solid">
+										<customHeader>
+											<Bar>
+												<contentMiddle>
+													<Title level="H3" text="Datos de Liquidacion"/>
+												</contentMiddle>
+												<contentRight>  
+														<!-- <Button icon="sap-icon://search" type="Transparent" text="Ver Solicitud" press="f_ver_liquidacion()"/> -->
+														<Button icon="sap-icon://paid-leave" press="f_cambiar_estado('L')" type="Transparent" text="Liberar"/>
+														<Button icon="sap-icon://unpaid-leave" press=".f_eliminar_liquidacion" type="Transparent" text="Rechazar"/>
+														<!-- <Button type="Transparent" text="Reporte Excel"  id="idExcel32" press="onPressExcel" icon="sap-icon://excel-attachment"/> -->
+												</contentRight>
+											</Bar> 
+										</customHeader>
+										<content>
+											<ObjectHeader id="tabla_liquidacion" binding="{path : 'myParam>/list_consulta_aprobacion_cab'}" 
+												responsive="true" fullScreenOptimized="false" icon="sap-icon://account" 
+												title="Nro Solicitud: {myParam>ID_SOL}" backgroundDesign="Translucent" 
+												intro="{myParam&gt;APELLIDOS}  {myParam&gt;NOMBRES}" titleActive="false" titlePress="handleTitlePress">
+												<attributes>
+													<ObjectAttribute id="obj_nro_solicitud_vista_liq" title="Numero Solicitud" /> 
+													<ObjectAttribute id="obj_fecha_sol_vista_liq" title="Fecha Solicitud" /> 
+													<ObjectAttribute id="obj_solicitante_vista_liq" title="Solicitante" /> 
+													<ObjectAttribute id="obj_sociedad_vista_liq" title="Sociedad" /> 
+													<ObjectAttribute id="obj_tipo_solicitud_vista_liq" title="Tipo Solicitud" /> 
+													<ObjectAttribute id="obj_estado_solicitud_vista_liq" title="Estado" /> 
+												</attributes> 
+											</ObjectHeader>
+												<Table id="idLiquidacionesTable" items="{path: 'myParam>/listaLiquidaciones'}" inset="false" mode="SingleSelectLeft">
+													<columns>
+														<Column width="10%"> <Text text="Nro Liq" tooltip="Nro liquidación" /> </Column>
+														<Column width="20%"> <Text text="Descripción" /> </Column>
+														<Column width="12%"> <Text text="Fecha" /> </Column>
+														<Column width="8%"> <Text text="Soc" tooltip="Sociedad" /> </Column> 
+														<Column width="12%"> <Text text="Estado Lib" tooltip="Estado Liberación" /> </Column>
+														<Column width="14%"> <Text text="Estado Liq" tooltip="Estado Liquidación" /> </Column> 
+														<Column width="13%"> <Text text="Monto Liq" tooltip="Monto Liquidación" /> </Column>   
+														<Column width="9%"> <Text text="Moneda" tooltip="Moneda" /> </Column>  
+														<Column width="8%"> <Text text="Acción" /> </Column>
+													</columns>
+													<items>
+														<ColumnListItem>
+															<cells>
+																<ObjectIdentifier title="{myParam>ID_LIQ}" />
+																<Text text="{myParam>DES_LIQ}" />
+																<Text text="{myParam>FEC_LIQ}" />
+																<Text text="{myParam>SOCIEDAD}" />
+																<Text text="{myParam>EST_LIB}" />
+																<Text text="{path: 'myParam>EST_LIQ', formatter: '.f_format_est_liq'}" />  
+																<Text text="{path: 'myParam>GEN_MONTO_LIQ', formatter: '.f_format_monto'}" />  
+																<Text text="{myParam>GEN_MON_GTO}" /> 
+																<Button icon="sap-icon://show" press=".f_ver_detalle" type="Transparent" />
+															</cells>
+														</ColumnListItem>
+													</items>
+												</Table>
+											
+										</content>
+									</Page> 
+								</l:SplitPane>
+							</l:PaneContainer>
+						</l:PaneContainer>
+					</l:ResponsiveSplitter>  
+ 				</content> 
+			</Page>  
+		</pages>
+	</App>
+</mvc:View>

@@ -1,0 +1,106 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	controllerName="nsnew.uisemnew.controller.Vista_Historial_Aprobado" xmlns:html="http://www.w3.org/1999/xhtml">
+	<App>
+		<pages>
+			<Page class="page_background_img">
+				<customHeader>
+					<Bar>
+						<contentLeft>
+							<Button id="idNav" icon="sap-icon://nav-back" press="pressVolver"/>
+						</contentLeft>
+						<contentMiddle>
+							<Toolbar>
+								<Title level="H3" text="Historial de aprobados"/>
+								<core:Icon src="sap-icon://task" class="size2 etiqueta_color"></core:Icon>
+							</Toolbar>
+						</contentMiddle>
+						<!--<contentRight>
+							<SegmentedButton id="sgbCambio" selectedKey="liq" width="320px" selectionChange="selectChange">
+								<items>
+									<SegmentedButtonItem text="Liquidaciones ({ path: 'myParam>/historialAprobacionesLiquidacion/length'})" key="liq" icon="sap-icon://travel-expense"/>
+									<SegmentedButtonItem text="Anticipos ({ path: 'myParam>/historialAprobacionesAnticipo/length'})" key="ant" icon="sap-icon://batch-payments"/>
+								</items>
+							</SegmentedButton>
+						</contentRight>-->
+					</Bar>
+				</customHeader>
+				<content>
+					 
+					 <IconTabBar id="icontab_historial_detalle_solicitud" class="sapUiNoContentPadding">
+												<items>
+													<IconTabFilter icon="sap-icon://accounting-document-verification" key="LIQUIDACION" text="Liquidaciones" >
+														 
+														<Panel expandable="true" expanded="true" headerText="Tabla de liquidaciones aprobadas ({myParam>/historialAprobacionesLiquidacion/length})" width="auto">
+															 	<List id="idTablaLiquidacion" items="{path: 'myParam>/historialAprobacionesLiquidacion', sorter: {path: 'FEC_LIB', descending: true}}"  mode="None"
+																	sticky="HeaderToolbar">
+																	<headerToolbar> 
+																		<OverflowToolbar height="auto" width="100%"> 
+																			<ToolbarSpacer></ToolbarSpacer>
+																			<Select id="cmb_tipo" width="20%" selectedKey=""> 
+																				<core:Item key="" text="- Seleccionar" />																			
+																				<core:Item key="ERE" text="Entregas a rendir" />
+																				<core:Item key="REE" text="Reembolso" />
+																				<core:Item key="CCH" text="Caja chica" />
+																			</Select>
+																			<DatePicker width="20%" id="txt_fecha_desde" valueFormat="yyyy-MM-dd" displayFormat="yyyy-MM-dd" editable="true"/>
+																			<DatePicker width="20%" id="txt_fecha_hasta" valueFormat="yyyy-MM-dd" displayFormat="yyyy-MM-dd" editable="true"/>
+																			<!--<SearchField width="220px" placeholder="Filtrar con fecha ..." liveChange="onSearchLiquidacion"/>-->
+																			<Button icon="sap-icon://search" type="Transparent" text="Buscar" press="f_get_lista_liquidaciones" visible="true"/>
+																			<Button type="Transparent" text="Reporte Excel" id="idExcel" press="f_press_liquidacion_excel" icon="sap-icon://excel-attachment"/>
+																		</OverflowToolbar>
+																	</headerToolbar>
+																	<items>
+																		<ObjectListItem title="Nro. Solicitud: {myParam>ID_SOL}" intro="" tooltip="{path: 'myParam>TIP_SOL'}" icon="{path: 'myParam>TIP_SOL', formatter: '.f_tipo_imagen_solicitud'}"  type="Active" number="{myParam>GEN_ID_LIQ}">   
+																			<firstStatus>
+																				<ObjectStatus title="Usuario Liberador" text="{path: 'myParam>USR_LIB'}"/>
+																			</firstStatus>
+																			<secondStatus>
+																				<ObjectStatus text="{myParam>USERNAME}" title="Usuario rendidor"/> 
+																			</secondStatus>
+																			<attributes>
+																				<ObjectAttribute text="{path: 'myParam>FEC_LIB', formatter: '.fecSolicitudFormato'}" title="Fec. Liberación"/>
+ 																			    <ObjectAttribute text="{myParam>ID_HIST_LIB}" title="Historial liberacion"/>  
+																			</attributes>
+									 									</ObjectListItem> 
+																	</items>
+																</List> 
+														</Panel>
+													</IconTabFilter>
+													<IconTabFilter icon="sap-icon://payment-approval" key="ANTICIPO" text="Anticipos" visible="false">
+														 
+														<Panel expandable="true" expanded="true" headerText="Tabla de anticipos aprobados ({myParam>/historialAprobacionesAnticipo/length})" width="auto"> 
+															<List id="idTablaAnticipo"   items="{path: 'myParam>/historialAprobacionesAnticipo', sorter: { path: 'FEC_LIB', descending: true }}"   mode="None"  sticky="HeaderToolbar">
+																<headerToolbar>
+																	<OverflowToolbar height="auto" width="100%"  >
+																		<ToolbarSpacer></ToolbarSpacer>
+																		<SearchField width="220px" placeholder="Filtrar con fecha..." liveChange="f_filtrar_historial"/>
+																		<Button icon="sap-icon://search" type="Transparent" text="Ver Solicitud" press="onPressSolicitud2" visible="false"/>
+																		<Button type="Transparent" text="Reporte Excel" id="idExcel2" press="f_press_anticipo_excel" icon="sap-icon://excel-attachment"/>
+																	</OverflowToolbar>
+																</headerToolbar>
+																<items>
+																	<ObjectListItem title="{myParam>COM_SAR}" intro="Solicitante: {myParam>USR_SOL}" icon="sap-icon://sales-order-item" type="Active"
+																		number="Importe {myParam>IMP_ORD}" numberUnit="{myParam>MON_ORD}">
+																		<firstStatus>
+																			<ObjectStatus title="Tipo de solicitud" text="{path: 'myParam>TIP_SOL', formatter: '.f_format_tipo_solicitud'}"/>
+																		</firstStatus>
+																		<secondStatus>
+																			<ObjectStatus title="Estado" text="{path: 'myParam>EST_ORD', formatter: '.f_format_est_ord' }"  />
+																		</secondStatus>
+																		<attributes>
+																			<ObjectAttribute text="{path: 'myParam>FEC_ORD', formatter: '.fecSolicitudFormato'}" title="Fec. Anticipo"/>
+																			<ObjectAttribute text="{myParam>ID_ORD}" title="Nro. anticipo"/>
+																			<ObjectAttribute text="{myParam>ID_SOL}" title="Nro. Solicitud"/>
+																		</attributes>
+																	</ObjectListItem>
+																</items>
+															</List> 
+														</Panel> 
+													</IconTabFilter> 
+												</items>
+											</IconTabBar> 
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

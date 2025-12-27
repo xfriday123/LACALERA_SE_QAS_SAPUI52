@@ -1,0 +1,22 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout.form">
+    <Dialog id="dialogCrearArea" title="Crear Area" draggable="true" resizable="false">
+        <content>
+            <layout:SimpleForm editable="true" layout="ResponsiveGridLayout"> 
+                <Label text="ID AREA"/>
+                <Input value="{areaModel>/AREA}" required="true"/>
+                <Label text="Descripción"/>
+                <Input value="{areaModel>/DESC_AREA}" required="true"/>
+                <Label text="Ceco"/>
+                <Input value="{areaModel>/OBJ_CO}" required="true"/>
+            </layout:SimpleForm>
+        </content>
+        <beginButton>
+            <Button text="Guardar" type="Transparent" press="onFormArea"/>
+        </beginButton>
+        <endButton>
+            <Button text="Cancelar" press="onCancelar('dialogCrearArea')"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

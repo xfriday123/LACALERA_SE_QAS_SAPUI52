@@ -1,0 +1,25 @@
+{
+	"mVersionDependency": {
+		"UI5.sap/ui/core.sap_horizon": "1.128.0",
+		"UI5.sap/ui/core": "1.128.0",
+		"UI5": "1.128.0"
+	},
+	"sEntity": "Theme",
+	"sId": "horizon_expenses",
+	"sLabel": "SmartExpenses Horizon",
+	"sVendor": "Ludwig Angel",
+	"oExtends": "UI5.sap/ui/core.sap_horizon",
+	"aBuildFiles": [
+		"library",
+		"custom"
+	],
+	"aFiles": [
+		"library",
+		"global",
+		"custom"
+	],
+	"sTextDirections": "LTR",
+	"sType": "STANDARD",
+	"sThemability": "PUBLIC",
+	"sReleaseStage": "GENERAL_AVAILABILITY"
+}

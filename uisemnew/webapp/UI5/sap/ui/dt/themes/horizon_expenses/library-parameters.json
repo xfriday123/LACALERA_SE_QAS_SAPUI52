@@ -1,0 +1,13 @@
+{
+	"_sap_ui_dt_Overlay_FocusBorderColor": "#0032a5",
+	"_sap_ui_dt_Overlay_TargetZoneOutlineColor": "#3538a2",
+	"_sap_ui_dt_Overlay_SelectionOutlineColor": "#3538a2",
+	"_sap_ui_dt_Overlay_CuttedBackgroundColor": "#ebf8ff",
+	"_sap_ui_dt_Overlay_CuttedBorderColor": "#3538a2",
+	"_sap_ui_dt_Overlay_HighlightOutlineColor": "#6d92e8",
+	"_sap_ui_dt_Overlay_HoverBackgroundColor": "rgba(53,56,162,0.05)",
+	"_sap_ui_dt_Overlay_DropZoneBackgroundColor": "rgba(91,115,139,0.1)",
+	"_sap_ui_dt_Overlay_BoxShadow": "0px 6px 12px 0px rgba(53,56,162,0.3)",
+	"_sap_ui_dt_ContextMenu_BorderRadius": ".25rem",
+	"_sap_ui_dt_Overlay_BorderRadius": ".5rem"
+}

@@ -1,0 +1,31 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout.form">
+    <Dialog id="dialogCrearConceptoPago" title="Crear Concepto de Pago" draggable="true" resizable="false">
+        <content>
+            <layout:SimpleForm
+                editable="true"
+                layout="ResponsiveGridLayout"
+                singleContainerFullSize="false">
+                <Label text="ID Concepto"/>
+                <Input value="{conceptoPagoModel>/ID_CONCEPTO}" required="true"/>
+                <Label text="Descripción Concepto"/>
+                <Input value="{conceptoPagoModel>/DES_CONCEPTO}" required="true"/>
+                <!--<Label text="Alimento"/>
+                <Switch state="{conceptoPagoModel>/ALIMENTO}"/>
+                <Label text="Gasto Vehicular"/>
+                <Switch state="{conceptoPagoModel>/GASTO_VEHIC}"/>
+                <Label text="Límite"/>
+                <Input value="{conceptoPagoModel>/LIMITE}" type="Number"/>
+                <Label text="Gasto de Flota"/>
+                <Switch state="{conceptoPagoModel>/GASTO_FLOTA}"/> -->
+            </layout:SimpleForm>
+        </content>
+        <beginButton>
+            <Button text="Guardar" type="Transparent" press="onFormConcepto"/>
+        </beginButton>
+        <endButton>
+            <Button text="Cancelar" press="onCancelar('dialogCrearConceptoPago')"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

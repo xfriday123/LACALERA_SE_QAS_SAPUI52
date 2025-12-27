@@ -1,0 +1,74 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <Dialog titleAlignment="Center" contentWidth= "800px" draggable= "true" resizable="false" id="formNuevoAnticipo" 
+    icon= "sap-icon://create-form" title="Ingresar anticipo">
+        <content>  
+            <VBox class="sapUiContentPadding">
+                 <!--<Toolbar width="100%" class="sapUiTinyMargin"> 
+                    <Label text="Tipo de solicitud : " textAlign="End" width="30%" design="Bold"></Label>
+                    <Label  id="txtTipoSolicitud" width="70%" ></Label> 
+                    <ToolbarSpacer></ToolbarSpacer> 
+                </Toolbar >
+                 <Toolbar width="100%" class="sapUiTinyMargin">
+                    <Label text="Texto Cabecera : " textAlign="End" width="30%" design="Bold"></Label>
+                    <Input id="inputCabecera" width="70%" editable="true" placeholder="Ingrese cabecera (100) ..." maxLength="100"></Input>
+                    <ToolbarSpacer></ToolbarSpacer>
+                </Toolbar >  
+                <Toolbar width="100%" class="sapUiTinyMargin" height="auto"> 
+                    <Label text="Nro de anticipo : " textAlign="End" width="30%" design="Bold"></Label>
+                    <Label id="txtNumeroAnticipo" text="" textAlign="Center" width="70%" design="Standard"></Label>
+                    <ToolbarSpacer></ToolbarSpacer> 
+                </Toolbar > -->
+                <Toolbar width="100%"> 
+                    <Label text="Fecha de anticipo : " textAlign="End" width="30%" design="Bold"></Label>
+                    <DatePicker id="dtFechaAnticipo" valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy" width="70%" value="{viewModel>/fechaSolicitud}"/>
+                    <ToolbarSpacer></ToolbarSpacer> 
+                </Toolbar >
+                <!--<Toolbar width="100%" class="sapUiTinyMargin">
+                    <Label text="Tipo de anticipo : " textAlign="End" width="30%" design="Bold"></Label>
+                    <ComboBox id="cmbTipoAnticipo" width="70%" items="{myParam>/tipoAntCajaChica}" placeholder=" Sel. Tip.Ant. " selectionChange="evtTipAnt">
+                        <core:ListItem key="{myParam>id}" text="{myParam>id} - {myParam>des}"/>
+                    </ComboBox> 
+                    <ToolbarSpacer></ToolbarSpacer>
+                </Toolbar >
+                <Toolbar width="100%" class="sapUiTinyMargin" height="auto"> 
+                    <Label text="Vía de pago : " textAlign="End" width="30%" design="Bold"></Label>
+                    <ComboBox id="cmbViaPago" width="70%" items="{myParam>/tipSoli}" placeholder="  Sel. Tipo de pago ">
+                        <core:ListItem key="{myParam>id}" text="{myParam>id} - {myParam>descripcion}"/>
+                    </ComboBox>
+                    <ToolbarSpacer></ToolbarSpacer> 
+                </Toolbar >-->
+                <Toolbar width="100%">
+                    <Label text="Importe : " textAlign="End" width="30%" design="Bold"></Label>
+                    <Input id="inputImporte" type="Number" width="30%" editable="true" placeholder="Ingrese importe (10)" maxLength="10"></Input>
+                    <Select id="cmbImporteMoneda" width="40%" selectedKey="PEN"> 
+                        <core:Item key="PEN" text="PEN - Soles" />
+                        <core:Item key="USD" text="USD - Dólares" />
+                    </Select>
+                    <!--
+                    <ComboBox id="cmbImporteMoneda" width="40%" items="{myParam>/moneda}" placeholder="Seleccione Moneda">
+                        <core:ListItem key="{myParam>id}" text="{myParam>id} - {myParam>descripcion}"/>
+                    </ComboBox>
+                    <ToolbarSpacer></ToolbarSpacer>
+                    -->
+                </Toolbar > 	 
+                <!--<Toolbar width="100%" class="sapUiTinyMargin" height="auto"> 
+                    <Label text="Liquidación : " textAlign="End" width="30%" design="Bold"></Label>
+                    <ComboBox id="cmbLiquidacion" width="70%" items="{myParam>/listaAnticipoCCH}" placeholder= "Sel. Liq." selectionChange="evtLiq">
+                        <core:ListItem key="{myParam>NRO_LIQ}" text="{myParam>NRO_LIQ} - {myParam>TXT_EST}"/>
+                    </ComboBox>
+                    <ToolbarSpacer></ToolbarSpacer>
+                </Toolbar>-->
+                 <Toolbar width="100%" height="70px">
+                    <Label text="Detalle Req : " textAlign="End" width="30%" design="Bold"></Label>
+                    <TextArea id="txtDetallePago" width="70%" editable="true" placeholder="Describa detalle de requerimiento(50)" maxLength="50"></TextArea>
+                    <ToolbarSpacer></ToolbarSpacer>
+                </Toolbar > 
+                <Toolbar>
+                    <ToolbarSpacer/>
+                    <Button id="btnRegAnticipo" text="Guardar" press="f_reg_anticipo"/>
+                    <Button text="Cancelar" press="f_cancelar('formNuevoAnticipo', 'FormNuevoAnticipo')"/>
+                </Toolbar>
+            </VBox>
+        </content>
+    </Dialog>
+</core:FragmentDefinition>
