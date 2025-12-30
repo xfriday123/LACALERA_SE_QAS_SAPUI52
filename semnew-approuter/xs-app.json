@@ -9,7 +9,7 @@
       {
           "source": "^/cpblcase/(.*)$",
           "target": "/$1",
-          "destination": "Capblcase"
+          "destination": "CapbagvseQAS"
       },
       {
           "source": "^/resources/(.*)$",
