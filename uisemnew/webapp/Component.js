@@ -51,7 +51,8 @@ sap.ui.define([
                         {"id": "X", "descripcion": "Liquidado"}, 
                         {"id": "R", "descripcion": "Rechazado"},
                         {"id": "B", "descripcion": "Borrado"},
-                        {"id": "T", "descripcion": "Todos"}
+                        {"id": "T", "descripcion": "Todos"},
+                        {"id": "L", "descripcion": "Aprobado web"}, 
                     ],
                     "T_EST_GTO": [
                         {"id": "C", "descripcion": "Creado"}, 
@@ -60,7 +61,8 @@ sap.ui.define([
                         {"id": "V", "descripcion": "Guardado para verificación"}, 
                         {"id": "P", "descripcion": "Contabilizado preliminar"}, 
                         {"id": "A", "descripcion": "Contabilizado"}, 
-                        {"id": "T", "descripcion": "Todos"}
+                        {"id": "T", "descripcion": "Todos"},
+                        {"id": "L", "descripcion": "Aprobado web"}, 
                     ],
                     "T_TIPO_SOLICITUD": [
                         {"id": "ERE", "descripcion": "Entregas a rendir"}, 

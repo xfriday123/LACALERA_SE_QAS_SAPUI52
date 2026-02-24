@@ -193,10 +193,17 @@ function (Controller, MessageToast, MessageBox, BusyIndicator) {
                     return;
                 } else{
 
+                     // MEJORA 11: Retirar de la lista concepto de gasto: 6999, DJ01 (COMPROBANTE SIN RUC / NO UTILIZAR)
+                    T_CONCEPTO = T_CONCEPTO.filter(function(concepto) {
+                        var id = (concepto.ID_CONCEPTO || "").trim();
+                        return id !== "6999" && id !== "DJ01";
+                    });
+                    
                     //añade concepto vacio si no existiera----
                     var ind_existe_vacio = T_CONCEPTO.some(function(concepto) {
                         return concepto.ID_CONCEPTO == "";
                     });
+
                     if (!ind_existe_vacio) {
                         var obj_vacio = { "ID_CONCEPTO": "", "DES_CONCEPTO": "Seleccionar"  };
                         T_CONCEPTO.push(obj_vacio);

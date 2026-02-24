@@ -45,7 +45,7 @@
                     <VBox class="sapUiContentPadding">
                         <Toolbar width="100%" >
                             <Label text="Concepto gasto : " textAlign="End" width="40%" design="Bold"></Label> 
-                            <Select id="cmb_concepto_gasto" items="{myParam>/T_CONCEPTO}" width="60%" change="f_change_concepto_gasto">
+                            <Select id="cmb_concepto_gasto" items="{ path: 'myParam>/T_CONCEPTO',length:1000}" width="60%" change="f_change_concepto_gasto">
                                 <core:ListItem key="{myParam>ID_CONCEPTO}" text="{myParam>ID_CONCEPTO} - {myParam>DES_CONCEPTO}"/> 
                             </Select> 
                             <ToolbarSpacer></ToolbarSpacer>
@@ -72,7 +72,7 @@
                         </Toolbar>
                         <Toolbar width="100%" >
                             <Label text="Tipo Comprobante : " textAlign="End" width="40%" design="Bold"></Label>
-                            <Select id="cmb_tipo_comprobante" items="{myParam>/T_TIP_COMP}" width="60%" selectedKey=""  > 
+                            <Select id="cmb_tipo_comprobante" items="{myParam>/T_TIP_COMP}" width="60%" selectedKey="" change="f_change_tipo_comprobante_placeholder" >  
                                 <core:ListItem key="{myParam>TIP_COMP}" text="{myParam>TIP_COMP} - {myParam>DESC_COMP}"/>
                             </Select>
                             <ToolbarSpacer></ToolbarSpacer>
@@ -108,8 +108,9 @@
                                 <core:Item key="" text="- Seleccionar" />
                                 <core:Item key="C0" text="0% IGV - Compras no gravadas" />
                                 <core:Item key="C1" text="18% IGV - Compras gravadas" />
-                                <core:Item key="C2" text="18% IGV - Compras no deducibles" />
+                                <!-- MEJORA 11: eliminar :<core:Item key="C2" text="18% IGV - Compras no deducibles" /> -->                                
                                 <core:Item key="C8" text="10% IGV - Compras gravadas" />
+                                <core:Item key="C9" text="10.5% IGV - Compras gravadas" />
                             </Select>
                             <ToolbarSpacer></ToolbarSpacer>
                         </Toolbar>
@@ -119,7 +120,7 @@
                                 <core:ListItem key="{myParam>OBJ_CO}" text="{myParam>OBJ_CO} - {myParam>DESC_OBJ_CO}"/>
                             </Select> -->
 
-                            <ComboBox id="cmb_ceco" editable="true" items="{ path: 'myParam>/T_OBJ_CO'}" 
+                            <ComboBox id="cmb_ceco" editable="true" items="{ path: 'myParam>/T_OBJ_CO',length:1000}" 
                                 placeholder="- Seleccione ceco" required="true" width="60%">
                                 <core:Item key="{myParam>OBJ_CO}" text="{myParam>OBJ_CO} - {myParam>DESC_OBJ_CO}"/>
                             </ComboBox>                            

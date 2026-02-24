@@ -89,7 +89,7 @@ xmlns:html="http://www.w3.org/1999/xhtml">
 												<attributes>
 													<ObjectAttribute text="{myParam>FEC_SOL}" title="Fec. Solicitud"/>
 													<ObjectAttribute text="{myParam>SOCIEDAD}" title="Sociedad"/>
-													<ObjectAttribute text="{path: 'myParam>TIP_SOL', formatter: '.f_format_tipo_solicitud'}" title="Tipo de Solicitud"/>
+													<ObjectAttribute id="txt_obj_tipo_sol" text="{path: 'myParam>TIP_SOL', formatter: '.f_format_tipo_solicitud'}" title="Tipo de Solicitud"/>
 													<ObjectAttribute text="{path: 'myParam>EST_SOL', formatter: '.f_format_est_sol'}" title="Estado"/> 
 													<ObjectAttribute id="txt_obj_calculo_monto_anticipo" text="" title="Anticipo"/>
 													<ObjectAttribute id="txt_obj_calculo_monto_liquidado" text="" title="Liquidado"/>

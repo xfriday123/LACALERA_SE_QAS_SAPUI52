@@ -28,7 +28,7 @@ sap.ui.define([
                 this.getView().addStyleClass("sapUiSizeCompact");
                 var oDate = new Date();
                 var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-                    pattern: "yyyy-MM-dd" 
+                    pattern: "yyyy-MM-dd"
                 });
                 var sDate = oDateFormat.format(oDate);
                 var oViewModel = new sap.ui.model.json.JSONModel({
@@ -1084,6 +1084,7 @@ sap.ui.define([
 
                 // Refrescar el modelo para actualizar la vista (opcional)
                 this.f_get_static_detalle_liquidacion()
+                
                 oModel.refresh(true);
             },
             f_editar_detalle_liquidacion: function (oEvent) {
@@ -1111,6 +1112,7 @@ sap.ui.define([
                 sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_moneda_gasto").setSelectedKey(aData[iIndex].MON_GTO);
                 sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_iva").setSelectedKey(aData[iIndex].IND_IVA);
                 sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_ceco").setSelectedKey(aData[iIndex].OBJ_CO);
+
 
             },
             f_cancelar: function (idDialog, namespace) {
@@ -1214,6 +1216,23 @@ sap.ui.define([
                     }
                 }
                 else if (p_idDialog == "formNuevoLiquidacion" && type == "guardar") { //Acción: Registrar nueva liquidación, 
+
+                    // MEJORA 010: PERMITE CREAR 2 LIQUIDACIONES EN LA MISMA SOLICITUD, NO DEBERIA
+                    var ind_existe_liquidacion_activa = false;
+                    if (lista_cab_liq != undefined && lista_cab_liq.length > 0) {
+                        for (var i = 0; i < lista_cab_liq.length; i++) {
+                            // Count any liquidation that is not rejected (R) or deleted (B)
+                            if (lista_cab_liq[i].EST_LIQ != "R" && lista_cab_liq[i].EST_LIQ != "B") {
+                                ind_existe_liquidacion_activa = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (ind_existe_liquidacion_activa) {
+                        sap.m.MessageBox.information("Ya existe una liquidación registrada para esta solicitud. No se permite crear más de una liquidación por solicitud.");
+                        return;
+                    }
 
                     if (v_tip_sol == "CCH" || v_tip_sol.TIP_SOL == "CJC") {
                         var ind_existe_estado_pendiente = false;  //Valida su lista de liquidaciones, si alguno estuviera en proceso o pendiente de ser liquidada, no puede registrar nuevo
@@ -1402,6 +1421,9 @@ sap.ui.define([
                 if (oInput != undefined) {
                     //   oInput.attachBrowserEvent("keyup", this.f_onKeyUp_sunat, this);
                 }
+                // MEJORA 07: Inicializar placeholder en el dialog
+                this.f_change_tipo_comprobante_placeholder();
+
                 //--------------------------------------------
                 /*var oSelect = sap.ui.core.Fragment.byId("formNuevoLiquidacion", "cmb_tipo_comprobante");
                         var oSelect_ceco = sap.ui.core.Fragment.byId("formNuevoLiquidacion", "cmb_ceco");
@@ -1565,6 +1587,7 @@ sap.ui.define([
                 if (oTable) {
                     oTable.setHeaderText(`Lista detallada de gastos (${v_total_IMP_GTO.toFixed(2)})`);
                     sap.ui.getCore().applyChanges();
+                  
                 }
                 var lista_cab_ordenes = oModel.getProperty("/lista_ord_cab");
                 var v_moneda = ""
@@ -1623,6 +1646,7 @@ sap.ui.define([
                         if (oTable) {
                             oTable.setHeaderText(`Lista detallada de gastos (${v_total_IMP_GTO.toFixed(2)})`);
                             sap.ui.getCore().applyChanges();
+                           
                         }
 
 
@@ -2557,13 +2581,32 @@ sap.ui.define([
                     sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_razon_social").setEnabled(true);
                 }
             },
+
+            f_change_tipo_comprobante_placeholder: function () {
+                // MEJORA 07: actualizar los palceholders
+                var v_tip_comprobante = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_tipo_comprobante").getSelectedKey();
+                var v_id_concepto = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_concepto_gasto").getSelectedKey();
+                var txt_nro_comprobante = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_nro_comprobante");
+                
+                // MEJORA 004: placeholder especial para D001
+                if (v_id_concepto[0] === "D") {
+                    txt_nro_comprobante.setPlaceholder("NNNNNNNNNN (10 dígitos sin guiones)");
+                } else if (v_tip_comprobante === "91") {
+                   
+                    txt_nro_comprobante.setPlaceholder("CCCCC-NNNNNNN");
+                } else {
+                   
+                    txt_nro_comprobante.setPlaceholder("CCCC-NNNNNNNN");
+                }
+            },
+
             evtCheckOI: function (evt) {
                 var key = evt.getSource().getSelected();
                 if (key) {
                     sap.ui.core.Fragment.byId('formNuevoLiquidacion', "idompotros").setEnabled(true);
                     sap.ui.core.Fragment.byId('formNuevoLiquidacion', "idompotros").setValue("");
                 } else {
-                   sap.ui.core.Fragment.byId('formNuevoLiquidacion', "idompotros").setEnabled(false);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "idompotros").setEnabled(false);
 
                 }
             },
@@ -2584,6 +2627,8 @@ sap.ui.define([
 
                 if (!detalleLiquidacion) detalleLiquidacion = [];
 
+
+                
                 //valida información de gasto registrado en liquidación----------
                 var v_fecha_liquidacion = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_fecha_liquidacion").getValue();
                 var v_id_concepto = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_concepto_gasto").getSelectedKey();
@@ -2591,13 +2636,17 @@ sap.ui.define([
                 var v_fecha_gasto = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_fecha_gasto").getValue();
 
                 var v_nif_prov = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_ruc_nif_proveedor").getValue();
-                var v_nif_provEditabled = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_ruc_nif_proveedor").getEditable();
+                var v_nif_provEditabled = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_ruc_nif_proveedor").getEditable();// MEJORA 009
 
                 var v_razon_social = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_razon_social").getValue();
-                var v_razon_socialEditabled = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_razon_social").getEditable();
+                var v_razon_socialEditabled = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_razon_social").getEditable();// MEJORA 009
 
                 var v_tip_comprobante = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_tipo_comprobante").getSelectedKey();
+                var v_tip_comprobanteEditabled = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_tipo_comprobante").getEnabled();// MEJORA 009
+
                 var v_nro_comprobante = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_nro_comprobante").getValue();
+                var v_nro_comprobanteEditabled = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_nro_comprobante").getEditable();// MEJORA 009
+
                 var v_importe_gasto = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_monto_gasto").getValue();
                 var v_moneda_gasto = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_moneda_gasto").getSelectedKey();// colcoar otros cargos
 
@@ -2606,36 +2655,55 @@ sap.ui.define([
                 v_id_otros = v_id_otros ? 'X' : '';
 
                 var v_iva = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_iva").getSelectedKey();
-                var v_ivaEditabled = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_iva").getEditable();
+                var v_ivaEditabled = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_iva").getEditable();// MEJORA 009
 
                 var v_ceco = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_ceco").getSelectedKey();
-                var v_cecoEditabled = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_ceco").getEditable();
+                var v_cecoEditabled = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_ceco").getEditable();// MEJORA 009
 
                 var v_input_documento = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "file_input_documento").getValue();
+                var v_input_documento_Enabled = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "file_input_documento").getEnabled();// MEJORA 009
 
                 //var regexNIF = /^[A-Z0-9]{11}$/;
                 var regexNIF = /^(?:[A-Z0-9]{11}|[A-Z0-9]{8})$/;
-                var regexComprobante = /^[A-Za-z0-9]{4}-[A-Za-z0-9]{8}$/;
+                // MEJORA 07: actualizacion para aceptar el formato 4-8 y el formato especial 5-7 para el documento 91
+                var regexComprobante = /^([A-Za-z0-9]{4}-[A-Za-z0-9]{8}|[A-Za-z0-9]{5}-[A-Za-z0-9]{7})$/;
                 var regexMontoGasto = /^\d+(\.\d{1,2})?$/;
                 var regexRD = /^[rD]/;
                 var regexConceptoGasto = /^6/;
 
                 this.g_validar_importe = 0; //MM-20250804-AJ
+                
                 //if (v_tip_comprobante === "01") { //MM-20250804-AJ
-                    if (parseFloat(v_importe_gasto) >= 700) {
+                //MEJORA 005: 
+                if (v_tip_comprobante != "97" && v_tip_comprobante != "02") {
+                    // Para 01 Facturas: límite de 700
+                    if (parseFloat(v_importe_gasto) > 700) {
                         this.g_validar_importe = 1;
-                        sap.m.MessageBox.information("Por favor, El importe de gasto no debe superar a 700");
+                        sap.m.MessageBox.information("El importe de gasto no debe superar los 700");
                         btn_agregar_item_detalle.setEnabled(true);
                         return;
                     }
-                //}
-                if (!v_input_documento) { //MM-20250804-AJ
-                 
+                }
+                else if (v_tip_comprobante === "02" && v_tip_comprobante != "97") {
+                    // Para 02 Recibos por honorarios: límite de 1500
+                    if (parseFloat(v_importe_gasto) > 1500) {
                         this.g_validar_importe = 1;
-                        sap.m.MessageBox.information("Por favor, Escoger un documento");
+                        sap.m.MessageBox.information("El importe de gasto no debe superar los 1500");
                         btn_agregar_item_detalle.setEnabled(true);
                         return;
-                    
+                    }
+                }
+
+
+
+                //}
+                if (!v_input_documento && v_input_documento_Enabled) { //MM-20250804-AJ
+
+                    this.g_validar_importe = 1;
+                    sap.m.MessageBox.information("Por favor, Escoger un documento");
+                    btn_agregar_item_detalle.setEnabled(true);
+                    return;
+
                 }
                 /* if (v_tip_comprobante === "01") { //MM-20250804-AJ
                     if (v_id_concepto === "6312") {
@@ -2653,7 +2721,7 @@ sap.ui.define([
                     }
                 } */
 
-                if (v_tip_comprobante === "02" && parseFloat(v_importe_gasto) >= 1500) { //MM-20250804-AJ
+                if (v_tip_comprobante === "02" && v_tip_comprobante != "97"  && parseFloat(v_importe_gasto) > 1500) { //MM-20250804-AJ
                     this.g_validar_importe = 1;
                     sap.m.MessageBox.information("Por favor, validar que el saldo del importe para recibos por honorarios no exceda los S/. 1500.");
                     return;
@@ -2681,29 +2749,48 @@ sap.ui.define([
                 //if (!regexRD.test(v_id_concepto) && regexConceptoGasto.test(v_id_concepto)) { 
                 //if (!(v_id_concepto === "6999") && regexConceptoGasto.test(v_id_concepto)) { 
                 // AQUI ERROR
-                if (!(v_tip_comprobante === "00")) {
-                    var array_comprobante = v_nro_comprobante.split('-');
-                    if (array_comprobante.length === 2) {
-                        var v_nro_comprobante_serie = `${array_comprobante[0].toString().trim().padStart(4, '0')}`.toUpperCase()
-                        var v_nro_comprobante_nro = `${array_comprobante[1].toString().trim().padStart(8, '0')}`.toUpperCase()
-                        v_nro_comprobante = `${v_nro_comprobante_serie}-${v_nro_comprobante_nro}`;
-                        //console.log("v_nro_comprobante", v_nro_comprobante);
-                        if (!regexComprobante.test(v_nro_comprobante)) {
+                if (!(v_tip_comprobante === "00")&&v_tip_comprobanteEditabled) {
+                    // MEJORA 004: 10 digitos para D001
+                    if (v_id_concepto[0] === "D") {
+                       
+                        var regexTransaccionD001 = /^\d{10}$/;
+                        if (!regexTransaccionD001.test(v_nro_comprobante)) {
+                            sap.m.MessageBox.information("Para devoluciones D001, el número de transacción debe tener exactamente 10 dígitos numéricos sin guiones (ej: 1234567891)");
+                            btn_agregar_item_detalle.setEnabled(true);
+                            return;
+                        }
+                    } else {
+                        // para otros documentos
+                        var array_comprobante = v_nro_comprobante.split('-');
+                        if (array_comprobante.length === 2 ) {
+                            // MEJORA 07: documento 91 (Comprobante no domiciliado - Extranjero)
+                            
+                            var serieLength = (v_tip_comprobante === "91") ? 5 : 4;
+                            var numeroLength = (v_tip_comprobante === "91") ? 7 : 8;
+                            
+                            var v_nro_comprobante_serie = `${array_comprobante[0].toString().trim().padStart(serieLength, '0')}`.toUpperCase()
+                            var v_nro_comprobante_nro = `${array_comprobante[1].toString().trim().padStart(numeroLength, '0')}`.toUpperCase()
+                            v_nro_comprobante = `${v_nro_comprobante_serie}-${v_nro_comprobante_nro}`;
+                            
+                            if (!regexComprobante.test(v_nro_comprobante)) {
+                                sap.m.MessageBox.information("Por favor, valide el formato del nro comprobante");
+                                btn_agregar_item_detalle.setEnabled(true);
+                                return;
+                            }
+
+                            if (isNaN(v_nro_comprobante_nro)) {
+                                sap.m.MessageBox.information("Por favor, valide el formato del nro comprobante, debe ser numérico");
+                                btn_agregar_item_detalle.setEnabled(true);
+                                return;
+                            }
+
+                        } else if(v_id_concepto[0] === "D"){
+
+                        } else{
                             sap.m.MessageBox.information("Por favor, valide el formato del nro comprobante");
                             btn_agregar_item_detalle.setEnabled(true);
                             return;
                         }
-
-                        if (isNaN(v_nro_comprobante_nro)) {
-                            sap.m.MessageBox.information("Por favor, valide el formato del nro comprobante, debe ser numérico");
-                            btn_agregar_item_detalle.setEnabled(true);
-                            return;
-                        }
-
-                    } else {
-                        sap.m.MessageBox.information("Por favor, valide el formato del nro comprobante");
-                        btn_agregar_item_detalle.setEnabled(true);
-                        return;
                     }
                 }
                 if (v_fecha_liquidacion == undefined || v_fecha_liquidacion == "") {
@@ -2715,10 +2802,32 @@ sap.ui.define([
                     sap.m.MessageBox.information("Por favor, valide el concepto de gasto");
                     btn_agregar_item_detalle.setEnabled(true);
                     return;
-                }
+                }                
+
+                // MEJORA 003: Validar campos obligatorios RUC/DNI y CECO para tipos de documento específicos
+                var v_tipos_comprobante_con_obligatorios = ["00", "01", "02", "03", "05", "10", "12", "14", "15", "16", "36", "37", "91", "98", "99"];
+                
+                if (v_tipos_comprobante_con_obligatorios.includes(v_tip_comprobante)) {
+                    // Validar RUC/DNI obligatorio
+                    if (v_nif_prov == undefined || v_nif_prov == "") {
+                        sap.m.MessageBox.information("Para este tipo de comprobante, el campo RUC/DNI es obligatorio");
+                        btn_agregar_item_detalle.setEnabled(true);
+                        return;
+                    }
+                    
+                    // Validar CECO obligatorio
+                    if (v_ceco == undefined || v_ceco == "") {
+                        sap.m.MessageBox.information("Para este tipo de comprobante, el campo CECO es obligatorio");
+                        btn_agregar_item_detalle.setEnabled(true);
+                        return;
+                    }
+                }    
+
+
+
                 // se cambio el id_concepto por el tipo de comprobante 00
 
-                if (v_tip_comprobante !== "00" && v_tip_comprobante !== "98" && v_tip_comprobante !== "99") {//gm 17122025
+                if (v_tip_comprobante !== "00" && v_tip_comprobante !== "98" && v_tip_comprobante !== "97" && v_tip_comprobante !== "99") {//gm 17122025
 
                     if ((v_nif_prov == undefined || v_nif_prov == "" || regexNIF.test(v_nif_prov) == false) && v_nif_provEditabled == true) {
                         sap.m.MessageBox.information("Por favor, valide la identificación del proveedor");
@@ -2730,7 +2839,7 @@ sap.ui.define([
                         btn_agregar_item_detalle.setEnabled(true);
                         return;
                     }
-                    if(v_id_concepto !== "R001" && v_id_concepto !== "D001" ){
+                    if (v_id_concepto[0] !== "R" && v_id_concepto[0] === "D") {
                         if ((v_iva == undefined || v_iva == "") && v_ivaEditabled == true) {
                             sap.m.MessageBox.information("Por favor, valide el indicador de impuesto");
                             btn_agregar_item_detalle.setEnabled(true);
@@ -2801,13 +2910,13 @@ sap.ui.define([
                     return;
                 }
 
-                if (v_tip_comprobante == undefined || v_tip_comprobante == "") {
+                if ((v_tip_comprobante == undefined || v_tip_comprobante == "")&&v_tip_comprobanteEditabled) {
                     sap.m.MessageBox.information("Por favor, valide el tipo de comprobante");
                     btn_agregar_item_detalle.setEnabled(true);
                     return;
                 }
                 //if (v_tip_comprobante !== "00") {
-                if (v_nro_comprobante == undefined || v_nro_comprobante == "") {
+                if ((v_nro_comprobante == undefined || v_nro_comprobante == "")&&v_nro_comprobanteEditabled) {
                     sap.m.MessageBox.information("Por favor, valide el nro de comprobante");
                     btn_agregar_item_detalle.setEnabled(true);
                     return;
@@ -2853,7 +2962,7 @@ sap.ui.define([
                     btn_agregar_item_detalle.setEnabled(true); 
                     return;
                 } */
-
+      
                 // Añade los datos una vez que el archivo base64 esté disponible
                 var data = {
                     FEC_LIQ: v_fecha_liquidacion,
@@ -2874,35 +2983,45 @@ sap.ui.define([
                     RUTA_ADJ: "",
                     visible_ADJ: v_visible_adj,
                     B64: v_file_documento_base64, // Archivo base64
-                    IMP_OTROS:v_imp_otros,
-                    ID_OTROS:v_id_otros
+                    IMP_OTROS: v_imp_otros,
+                    ID_OTROS: v_id_otros
                 };
 
                 var T_LIQ_DET = oModel.getProperty("/detalleLiquidacion");
                 var validateDuplicate = false;
-                //cambio de validacion de duplicados v_id_concepto a v_tip_comprobante
-                if (v_tip_comprobante !== "00") {
-                    validateDuplicate = (data) => {
-                        return T_LIQ_DET.some(item => item.NIF_PROV === data.NIF_PROV && item.NRO_COMP === data.NRO_COMP);
-                    };
-                } else {
-                    validateDuplicate = (data) => {
-                        return T_LIQ_DET.some(item => item.NRO_COMP === data.NRO_COMP);
-                    };
-                }
+                if(v_tip_comprobanteEditabled){
+                    //cambio de validacion de duplicados v_id_concepto a v_tip_comprobante
+                    if (v_tip_comprobante !== "00") {
+                        validateDuplicate = (data) => {
+                            return T_LIQ_DET.some(item => item.NIF_PROV === data.NIF_PROV && item.NRO_COMP === data.NRO_COMP);
+                        };
+                    } else {
+                        validateDuplicate = (data) => {
+                            return T_LIQ_DET.some(item => item.NRO_COMP === data.NRO_COMP);
+                        };
+                    }
 
-                
-                    if (!validateDuplicate(data)) {                        
-                            this.f_onKeyUp_sunat(data)
-                        
+
+                    if (!validateDuplicate(data)) {
+                        this.f_onKeyUp_sunat(data)
+
                     } else {
                         sap.m.MessageBox.information("Por favor, validar documento duplicado");
                         btn_agregar_item_detalle.setEnabled(true);
                         return;
                     }
+                }else{
+                    detalleLiquidacion.push(data);
+                    oModel.setProperty("/detalleLiquidacion", detalleLiquidacion);
+                    that.f_limpiar_datos_fragment_liquidacion();
                 
-
+                    that.f_get_static_detalle_liquidacion();
+                    btn_agregar_item_detalle.setEnabled(true);
+                }
             },
+
+
+
             f_limpiar_datos_fragment_liquidacion: function () {
                 var oModel = this.getView().getModel("myParam");
                 //sap.ui.core.Fragment.byId('formNuevoLiquidacion',"txt_fecha_liquidacion").setValue("");
@@ -2912,6 +3031,7 @@ sap.ui.define([
                 sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_ruc_nif_proveedor").setValue("");
                 sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_razon_social").setValue("");
                 sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_tipo_comprobante").setSelectedKey("");
+                sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_tipo_comprobante").setEnabled(true);
                 sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_nro_comprobante").setValue("");
                 sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_monto_gasto").setValue("");
                 sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_moneda_gasto").setSelectedKey("");
@@ -2919,30 +3039,70 @@ sap.ui.define([
                 sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_ceco").setSelectedKey("");
                 sap.ui.core.Fragment.byId('formNuevoLiquidacion', "file_input_documento").setValue("");
                 sap.ui.core.Fragment.byId('formNuevoLiquidacion', "idompotros").setValue("");
-                
+
+                // MEJORA 009: Restaurar estado de los campos al limpiar (habilitar todo por defecto)
+                sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_ruc_nif_proveedor").setEditable(true);
+                sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_razon_social").setEditable(true);
+                sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_iva").setEditable(true);
+                sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_ceco").setEditable(true);
+                sap.ui.core.Fragment.byId('formNuevoLiquidacion', "file_input_documento").setEnabled(true);
+                sap.ui.core.Fragment.byId('formNuevoLiquidacion', "idompotroscheck").setEnabled(true);
+                sap.ui.core.Fragment.byId('formNuevoLiquidacion', "idompotros").setEnabled(true);
+                sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_nro_comprobante").setEditable(true);
+
                 oModel.setProperty("/fileBase64_selected", "");
                 oModel.setProperty("/fileName_selected", "");
             },
-            f_change_concepto_gasto: function (oEvent) { //GG-20251712
+
+            // MEJORA 006: D001 tipo comprobante 97 por defecto y no desglosar 
+            // MEJORA 009: R001 bloquear campos específicos
+            f_change_concepto_gasto: function (oEvent) { //GG-20251712 
                 console.log(oEvent)
                 var v_id_concepto = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_concepto_gasto").getSelectedKey();
-                if(v_id_concepto[0]=="D"){
+                if (v_id_concepto && v_id_concepto[0] === "D") {
+                    // Devoluciones (ej. D001-DEVOLUCION BCP PEN): tipo comprobante 97 por defecto y no permitir cambiar (no desglosar)
                     sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_ruc_nif_proveedor").setEditable(false);
                     sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_razon_social").setEditable(false);
                     sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_iva").setEditable(false);
-                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_ceco").setEditable(false);       
-                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_tipo_comprobante").setSelectedKey("97");      
-                }else{
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_ceco").setEditable(false);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_tipo_comprobante").setSelectedKey("97");
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_tipo_comprobante").setEnabled(false);
+                    // MEJORA 009: Desbloquear campos de adjuntos y otros cargos para devoluciones
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "file_input_documento").setEnabled(true);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "idompotroscheck").setEnabled(true);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "idompotros").setEnabled(true);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_nro_comprobante").setEditable(true);
+                } else if (v_id_concepto[0] === "R") {
+                    // MEJORA 009: R001- Reembolod ERE BPC PEN: Bloquear campos específicos
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "file_input_documento").setEnabled(false);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_razon_social").setEditable(false);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_ruc_nif_proveedor").setEditable(false);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_tipo_comprobante").setEnabled(false);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_nro_comprobante").setEditable(false);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_iva").setEditable(false);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "idompotroscheck").setEnabled(false);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "idompotros").setEnabled(false);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_ceco").setEditable(false);
+                } else {
+                    // Para otros conceptos, habilitar todos los campos
                     sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_ruc_nif_proveedor").setEditable(true);
                     sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_razon_social").setEditable(true);
                     sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_iva").setEditable(true);
-                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_ceco").setEditable(true);     
-                                    
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_ceco").setEditable(true);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_tipo_comprobante").setEnabled(true);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "file_input_documento").setEnabled(true);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "idompotroscheck").setEnabled(true);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "idompotros").setEnabled(true);
+                    sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_nro_comprobante").setEditable(true);
                 }
-
-           
-
+                
+                // MEJORA 004: actualizar placeholder
+                this.f_change_tipo_comprobante_placeholder();
             },
+
+
+
+
             f_change_ruc_liveupdate_form_liquidacion: async function (oEvent) {
                 var v_ruc_nif = "";
                 var v_razon_social = "";
@@ -3269,7 +3429,7 @@ sap.ui.define([
                 //btn_agregar_item_detalle.setEnabled(false); gm17122025
                 //
                 var regexConceptoGasto = /^6/;
-                var regexComprobante = /^[A-Za-z0-9]{4}-[A-Za-z0-9]{8}$/;
+                var regexComprobante = /^([A-Za-z0-9]{4}-[A-Za-z0-9]{8}|[A-Za-z0-9]{5}-[A-Za-z0-9]{7})$/;
                 var regexRD = /^[rD]/;
 
                 var v_id_concepto = sap.ui.core.Fragment.byId('formNuevoLiquidacion', "cmb_concepto_gasto").getSelectedKey();
@@ -3279,8 +3439,13 @@ sap.ui.define([
 
                     var array_comprobante = COMPROBANTE.split('-')
                     if (array_comprobante.length === 2) {
-                        var v_nro_comprobante_serie = `${array_comprobante[0].toString().trim().padStart(4, '0')}`.toUpperCase()
-                        var v_nro_comprobante_nro = `${array_comprobante[1].toString().trim().padStart(8, '0')}`.toUpperCase()
+
+                        // MEJORA 07: formato especial para el documento tipo 91 (Comprobante no domiciliado - Extranjero)
+                        var serieLength = (TIPO === "91") ? 5 : 4;
+                        var numeroLength = (TIPO === "91") ? 7 : 8;
+
+                        var v_nro_comprobante_serie = `${array_comprobante[0].toString().trim().padStart(serieLength, '0')}`.toUpperCase()
+                        var v_nro_comprobante_nro = `${array_comprobante[1].toString().trim().padStart(numeroLength, '0')}`.toUpperCase()
                         COMPROBANTE = `${v_nro_comprobante_serie}-${v_nro_comprobante_nro}`;
                         if (!regexComprobante.test(COMPROBANTE)) {
                             sap.m.MessageBox.information("Por favor, valide el formato del nro comprobante");
@@ -3289,6 +3454,8 @@ sap.ui.define([
                         } else {
                             sap.ui.core.Fragment.byId('formNuevoLiquidacion', "txt_nro_comprobante").setValue(COMPROBANTE);
                         }
+                    } else if(v_id_concepto[0] === "D"){
+
                     } else {
                         sap.m.MessageBox.information("Por favor, valide el formato del nro comprobante");
                         btn_agregar_item_detalle.setEnabled(true);
@@ -3417,7 +3584,7 @@ sap.ui.define([
                                     oModel.setProperty("/detalleLiquidacion", detalleLiquidacion);
                                 }
 
-                                that.f_limpiar_datos_fragment_liquidacion();
+                                that.f_limpiar_datos_fragment_liquidacion();                               
                                 btn_agregar_item_detalle.setEnabled(true);
                                 //setTimeout(async () => {
                                 that.f_get_static_detalle_liquidacion();
@@ -3443,6 +3610,7 @@ sap.ui.define([
                             detalleLiquidacion.push(dataDetalleLiquidacion);
                             oModel.setProperty("/detalleLiquidacion", detalleLiquidacion);
                             that.f_limpiar_datos_fragment_liquidacion();
+                           
                             that.f_get_static_detalle_liquidacion();
                             btn_agregar_item_detalle.setEnabled(true);
                         } else {
@@ -3495,6 +3663,7 @@ sap.ui.define([
                                     detalleLiquidacion.push(dataDetalleLiquidacion);
                                     oModel.setProperty("/detalleLiquidacion", detalleLiquidacion);
                                     that.f_limpiar_datos_fragment_liquidacion();
+                                   
                                     //setTimeout(async () => {
                                     that.f_get_static_detalle_liquidacion();
                                     //}, 1000)  
@@ -3521,6 +3690,7 @@ sap.ui.define([
                                 detalleLiquidacion.push(dataDetalleLiquidacion);
                                 oModel.setProperty("/detalleLiquidacion", detalleLiquidacion);
                                 that.f_limpiar_datos_fragment_liquidacion();
+                            
                                 that.f_get_static_detalle_liquidacion();
                                 btn_agregar_item_detalle.setEnabled(true);
                             } else {
